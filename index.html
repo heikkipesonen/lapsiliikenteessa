@@ -1,0 +1,252 @@
+<html>
+<head>
+	<script type="text/javascript" src="jquery-2.0.0.min.js"></script>
+	<script type="text/javascript" src="jquery.hammer.js"></script>
+	<script type="text/javascript" src="jquery.transit.js"></script>
+
+	<script type="text/javascript" src="jq.extend.js"></script>
+	<script type="text/javascript" src="events.js"></script>
+	<script type="text/javascript" src="draggable.js"></script>
+	<script type="text/javascript" src="puzzle.js"></script>
+	<script type="text/javascript" src="game.js"></script>
+
+</head>
+
+<style>
+ html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+	#wrapper{
+		width: 100%;
+		height: 100%;
+		top: 0%;
+		border: 1px solid #d00;
+		position: absolute;
+	}
+
+	#nelio{
+		z-index: 100;
+	}
+
+	#nelio{
+		width: 256px;
+		height: 256px;
+		border: 1px solid #d00;
+		position: absolute;
+		left: 100px;
+		top: 100px;	
+		border-radius: 100%;	
+	}
+
+	#target{
+		left:50%;
+		top:50%;
+		position: absolute;
+		z-index: 0;
+
+		width: 128px;
+		height: 128px;
+		border: 18px solid #0d0;
+	}
+
+	#limit{
+		width: 50%;
+		height: 50%;
+		position: absolute;
+		top: 100px;
+		left: 100px;
+		border: 1px solid #00d;
+	}
+
+
+	#puzzle-1{
+		-webkit-user-select: none;
+		margin: 5%;
+		width: 80%;
+		height: 80%;
+		border: 1px solid #d0d;
+		position: relative;
+	}
+
+	.piece{
+		z-index: 100;
+		background-color: rgba(200,255,200,0.9);
+	}
+
+	.piece, .slot{
+		width: 128px;
+		height: 128px;
+		display: inline-block;		
+		border: 1px solid #0d0;
+	}
+
+	.slot{
+		border: 1px solid #000;
+		position: absolute;
+	}
+
+	.targeted{
+		background-color: rgba(255,200,200,0.7);
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	.game{
+		position: absolute;
+		top: 0px;
+		left: 0px;
+		width: 100%;
+		height: 100%;
+		overflow: hidden;
+	}	
+
+	
+	.pane-container{
+		position: absolute;
+		top: 0px;
+		left: 0px;
+		width: 300%;
+		height: 100%;
+		overflow: hidden;
+	}	
+
+	.pane{
+		position: absolute;
+		margin: 0px;
+		padding: 0px;
+		display: inline-block;
+		width: calc(100% / 3);
+		height: 100%;
+		top: 0px;
+		border: 1px solid #d00;
+	}
+
+	.pane:first-child{
+		left: 0px;
+	}
+
+	.pane:nth-child(2){
+		left: 100%
+	}
+
+	.pane:last-child{
+		right: 0px;
+	}
+
+</style>
+<script type="text/javascript">
+	
+$(function(){
+	$('#puzzle-1').puzzle();
+
+	//$('#game-1').game();
+});
+
+</script>
+<body>
+	<div id="wrapper">
+
+<!--
+
+
+	<div id="game-1" class="game">	
+		<div class="pane-container">
+			
+			<div id="left-pane" class="pane">
+
+			asdfpjasdfasdjflkajsdfkljalsdjfajsldkfjasdfa
+			
+			</div>
+			<div id="middle-pane" class="pane">
+				
+
+		0892354098356234059863405867204587601398450194385102493850234985
+
+			</div>
+
+			<div id="right-pane"  class="pane">
+				
+
+
+			987zxv08as09a8sfg07asfr897as9f7a0sf70asf80asdf08as09fd8
+
+
+			</div>
+		</div>
+	</div>
+
+-->
+	<div id="puzzle-1" container="#puzzle-1">
+	<!--
+		<div class="piece" id="piece-1" target="#slot-1"></div>
+		<div class="piece" id="piece-2" target="#slot-2"></div>
+		<div class="piece" id="piece-3" target="#slot-3"></div>
+		<div class="piece" id="piece-4" target="#slot-4"></div>
+		-->
+		<div class="piece" id="piece-5" target="#slot-5"></div>
+		<div class="piece" id="piece-6" target="#slot-5"></div>
+		<div class="piece" id="piece-7" target="#slot-5"></div>
+
+		<div class="slot" id="slot-1" style="left:128px;top:100px"></div>
+		<div class="slot" id="slot-2" style="left:128px;top:228px"></div>
+		<div class="slot" id="slot-3" style="left:128px;top:356px"></div>
+		<div class="slot" id="slot-4" style="left:256px;top:100px"></div>
+		<div class="slot" id="slot-5" style="left:512px;top:128px"></div>	
+	</div>
+	</div>
+</body>
+</html>
