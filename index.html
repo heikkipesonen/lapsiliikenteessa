@@ -1,5 +1,6 @@
 <html>
 <head>
+	<meta charset="utf-8">
 	<script type="text/javascript" src="jquery-2.0.0.min.js"></script>
 	<script type="text/javascript" src="jquery.hammer.js"></script>
 	<script type="text/javascript" src="jquery.transit.js"></script>
@@ -9,6 +10,8 @@
 	<script type="text/javascript" src="draggable.js"></script>
 	<script type="text/javascript" src="puzzle.js"></script>
 	<script type="text/javascript" src="game.js"></script>
+
+	<script type="text/javascript" src="switcher.js"></script>
 
 </head>
 
@@ -58,6 +61,7 @@ table {
 }
 
 	#wrapper{
+		font-family: arial, helvetica;
 		width: 100%;
 		height: 100%;
 		top: 0%;
@@ -100,13 +104,15 @@ table {
 	}
 
 
-	#puzzle-1{
-		-webkit-user-select: none;
-		margin: 5%;
-		width: 80%;
-		height: 80%;
-		border: 1px solid #d0d;
+	.puzzle{
 		position: relative;
+		-webkit-user-select: none;
+		margin: 0%;
+		width: 100%;
+		height: 100%;
+		border: 1px solid #d0d;
+		background-color: #eee;
+		z-index: 100;
 	}
 
 	.piece{
@@ -157,20 +163,20 @@ table {
 	
 	.pane-container{
 		position: absolute;
-		top: 0px;
+		top: 64px;
 		left: 0px;
 		width: 300%;
-		height: 100%;
 		overflow: hidden;
+		height: calc(100% - 64px);
 	}	
 
 	.pane{
 		position: absolute;
+		height: 100%;
 		margin: 0px;
 		padding: 0px;
 		display: inline-block;
 		width: calc(100% / 3);
-		height: 100%;
 		top: 0px;
 		border: 1px solid #d00;
 	}
@@ -180,20 +186,75 @@ table {
 	}
 
 	.pane:nth-child(2){
-		left: 100%
+		left: calc(100% / 3);
 	}
 
 	.pane:last-child{
 		right: 0px;
 	}
 
+	.pane-selector{
+		height: 64px;
+	}
+
+	.pane-selector>div{
+		height: 100%;
+		padding: 0px;
+		margin: 0px;
+		display: inline-block;
+		background-color: #d00;
+	}
+
+	.pane-selector>div:hover{
+		opacity: 0.4;
+	}
+
+	.pane p{
+		font-size: 400px;
+	}
+
+	.pane-selector h3{
+		font-size:30pt;
+		color: #fff;
+	}
+
 </style>
 <script type="text/javascript">
 	
 $(function(){
-	$('#puzzle-1').puzzle();
+	/*
+	var p = $('#puzzle-1').puzzle();
+	p.on('complete',function(pcs){
+		console.log(pcs)
+	})
+*/
 
-	//$('#game-1').game();
+	var s = new switcher('#wrapper');
+
+/*
+	var g = $('#game-1').game();
+
+	g.on('showpane',function(e){
+
+		console.log(e);
+
+		if (e.attr('id') == 'left-pane'){
+			var p = $('#puzzle-2').puzzle();
+			p.on('complete',function(){
+				g.showPane('#middle-pane');
+			});
+		} else if (e.attr('id') == 'middle-pane'){
+
+				var p = $('#puzzle-1').puzzle();
+				p.on('complete',function(pcs){
+					g.showPane('#right-pane');
+				})
+
+		}
+	});
+
+	g.showPane('#left-pane');
+*/
 });
 
 </script>
@@ -204,39 +265,61 @@ $(function(){
 
 
 	<div id="game-1" class="game">	
+		<div class="pane-selector">
+			
+		</div>
+
 		<div class="pane-container">
 			
-			<div id="left-pane" class="pane">
+			<div id="left-pane" class="pane scenario" scenario="crossroad" scenario-name="tien ylitys">
 
-			asdfpjasdfasdjflkajsdfkljalsdjfajsldkfjasdfa
+				<div id="puzzle-2" class="puzzle" container="#puzzle-2">
+					<div class="piece" id="1-piece-1" target="#1-slot-1"></div>
+					<div class="slot" id="1-slot-1" style="right:128px;top:100px"></div>
+				</div>
+
 			
 			</div>
-			<div id="middle-pane" class="pane">
+			<div id="middle-pane" class="pane scenario" scenario="puzzle" scenario-name="liikennevalo">
 				
+				<div id="puzzle-1" class="puzzle" container="#puzzle-1">
+					<div class="piece" id="piece-1" target="#slot-1"></div>
+					<div class="piece" id="piece-2" target="#slot-2"></div>
+					<div class="piece" id="piece-3" target="#slot-3"></div>
+					<div class="piece" id="piece-4" target="#slot-4"></div>
+					
+					<div class="piece" id="piece-5" target="#slot-5"></div>
+					<div class="piece" id="piece-6" target="#slot-5"></div>
+					<div class="piece" id="piece-7" target="#slot-5"></div>
 
-		0892354098356234059863405867204587601398450194385102493850234985
+					<div class="slot" id="slot-1" style="left:128px;top:100px"></div>
+					<div class="slot" id="slot-2" style="left:128px;top:228px"></div>
+					<div class="slot" id="slot-3" style="left:128px;top:356px"></div>
+					<div class="slot" id="slot-4" style="left:256px;top:100px"></div>
+					<div class="slot" id="slot-5" style="left:512px;top:128px"></div>	
+				</div>
 
 			</div>
 
-			<div id="right-pane"  class="pane">
+			<div id="right-pane"  class="pane scenario" scenario="" scenario-name="persereikiä">
 				
+<p>kanada</p>
 
-
-			987zxv08as09a8sfg07asfr897as9f7a0sf70asf80asdf08as09fd8
+			
 
 
 			</div>
 		</div>
 	</div>
 
--->
+<!--
 	<div id="puzzle-1" container="#puzzle-1">
-	<!--
+	
 		<div class="piece" id="piece-1" target="#slot-1"></div>
 		<div class="piece" id="piece-2" target="#slot-2"></div>
 		<div class="piece" id="piece-3" target="#slot-3"></div>
 		<div class="piece" id="piece-4" target="#slot-4"></div>
-		-->
+		
 		<div class="piece" id="piece-5" target="#slot-5"></div>
 		<div class="piece" id="piece-6" target="#slot-5"></div>
 		<div class="piece" id="piece-7" target="#slot-5"></div>
@@ -247,6 +330,7 @@ $(function(){
 		<div class="slot" id="slot-4" style="left:256px;top:100px"></div>
 		<div class="slot" id="slot-5" style="left:512px;top:128px"></div>	
 	</div>
+-->
 	</div>
 </body>
 </html>

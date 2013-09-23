@@ -13,14 +13,13 @@ $.fn.extend({
 		}
 		return this;
 	},
-	_getTranslated:function(){
+	getTranslated:function(){
 		return this._translated;
 	},
 	getPosition:function(){
 		if (!this._translated){
 			return this.position();
 		} else {
-		console.log(this._translated);
 			return this._translated;
 		}
 	},
@@ -31,8 +30,8 @@ $.fn.extend({
 			return {left: this._translated.left + $(this).outerWidth()/2 , top:this._translated.top+ $(this).outerHeight()/2};
 		}
 	},
-	draggable:function(target,limit){
-		return new draggable(this,target,limit);
+	draggable:function(target,limit,opts){
+		return new draggable(this,target,limit,opts);
 	},
 	puzzle:function(){
 		return new puzzle(this);

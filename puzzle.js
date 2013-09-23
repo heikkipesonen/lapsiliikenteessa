@@ -3,7 +3,7 @@ function puzzle(container){
 	this._element = $(container);
 	this._piecesOnTarget = [];
 	this._pieces = [];
-	this._slots = [];
+	
 	this._init();
 }
 
@@ -12,6 +12,8 @@ puzzle.prototype = {
 		var me = this;
 		var pcs = this._element.find('.piece');
 		var slots =this._element.find('.slot');			
+
+		this._slotCount = slots.length;
 
 		$(pcs).each(function(){
 			var pc = $(this).draggable( $(this).attr('target'),me._element.attr('container'));
@@ -48,7 +50,8 @@ puzzle.prototype = {
 		}
 	},
 	isComplete:function(){
-		if (this.getPiecesOnTarget().length == this._pieces.length){
+		console.log(this._slotCount +'-'+ this.getPiecesOnTarget().length );
+		if (this.getPiecesOnTarget().length == this._slotCount){
 			return true;
 		} else {
 			return false;
@@ -92,8 +95,8 @@ puzzle.prototype = {
 				this._piecesOnTarget.push(piece);
 			}
 
-			if (this._piecesOnTarget.length == this._pieces.length){
-				this.fire('complete',this);
+			if (this.isComplete()){
+				this.fire('complete',this.getPiecesOnTarget());
 			}
 		}
 	}

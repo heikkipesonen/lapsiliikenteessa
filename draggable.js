@@ -1,4 +1,4 @@
-function draggable(element,target,limiter){
+function draggable(element,target,limiter,options){
 	this._events = new events(this);
 	this._element = $(element);
 
@@ -19,18 +19,25 @@ function draggable(element,target,limiter){
 }
 
 draggable.prototype = {
+	getId:function(){
+		return this._element.attr('id');
+	},
+	getElement:function(){
+		return this._element;
+	},
+	getTargetId:function(){
+		return this._target.attr('id');
+	},
 	_init:function(){
 		this._position = {left:0,top:0};
 		this.move(this._element.getPosition().left, this._element.getPosition().top);
 		this._element.css({top:0,left:0,position:'absolute'});
 
 		var me = this;
-		
+
 		this._element.hammer().on('dragstart',function(e){
 			me._lastEvent = false;
-			me._dragStartPosition = me.getPosition();
-			
-			console.log(me.getPosition());
+			me._dragStartPosition = me.getElementPosition();
 			
 			me.fire('dragstart',me);
 
@@ -76,7 +83,6 @@ draggable.prototype = {
 		});
 	},
 	revert:function(){
-		console.log(this._dragStartPosition);
 		this.setPosition( this._dragStartPosition.left, this._dragStartPosition.top );
 		this.fire('revert',this._dragStartPosition);
 	},
