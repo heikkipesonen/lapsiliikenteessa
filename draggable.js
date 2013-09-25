@@ -36,6 +36,7 @@ draggable.prototype = {
 		var me = this;
 
 		this._element.hammer().on('dragstart',function(e){
+			e.preventDefault();
 			me._lastEvent = false;
 			me._dragStartPosition = me.getElementPosition();
 			
@@ -47,6 +48,7 @@ draggable.prototype = {
 		});
 
 		this._element.hammer().on('drag',function(e){
+			e.preventDefault();
 			if (!me._lastEvent){
 				try{
 					me.move(e.gesture.deltaX,e.gesture.deltaY);

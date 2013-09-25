@@ -29,13 +29,27 @@ game.prototype = {
 		return this._container.find('#'+id);
 	},
 	scale:function(){
-		var count = this._paneSelector.children().length;
-		var w = this._paneSelector.innerWidth() / count;
+		var count = this._paneSelector.children().length,
+			w = this._paneSelector.innerWidth() / count,
+			me = this,
+			counter = 0;
 
 		this._paneSelector.children().each(function(){
+			
 			$(this).css({
 				width:w,
 			});
+		});
+
+		this._panes.each(function(){
+			$(this).css({
+				position:'absolute',
+				top:'0px',
+				width:me._paneContainer.innerWidth() / 3,
+				height:'100%',
+				left: (me._paneContainer.innerWidth() / 3) * counter
+			});
+			counter++;
 		});
 
 		if (this._visiblePane){
@@ -46,7 +60,6 @@ game.prototype = {
 		if (typeof(pane) == 'string'){
 			pane = this._container.find(pane);
 		}
-		console.log(pane);
 		if (pane){		
 			var left = pane.position().left;
 

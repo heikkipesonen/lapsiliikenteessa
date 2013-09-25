@@ -15,8 +15,13 @@ puzzle.prototype = {
 
 		this._slotCount = slots.length;
 
+		this._container = $(this._element.attr('container'));
+		if (!this.container || this._container.length < 1){
+			this._container = this._element;
+		} 
+
 		$(pcs).each(function(){
-			var pc = $(this).draggable( $(this).attr('target'),me._element.attr('container'));
+			var pc = $(this).draggable( $(this).attr('target'),this._container);
 
 			pc.on('onTarget',function(e){
 				me._pieceOnTarget(this);
@@ -29,16 +34,20 @@ puzzle.prototype = {
 			me._pieces.push( pc );
 		});
 
-		this.shuffle();
+		//this.shuffle();
+	},
+	reset:function(){
+		this._piecesOnTarget = [];
 	},
 	shuffle:function(piece){
-		var max_x = $(this._element.attr('container')).innerWidth(),
-			max_y = $(this._element.attr('container')).innerHeight();
+
+		var max_x = this._container.innerWidth(),
+			max_y = this._container.innerHeight();
 	
 		if (!piece){		
 			for (var i in this._pieces){
-				var left = (Math.random() * max_x);
-				var top = (Math.random() * max_y);
+				var left = Math.random() * (max_x-this._pieces[i]._element.outerWidth());
+				var top = Math.random() * (max_y-this._pieces[i]._element.outerHeight());
 				
 				this._pieces[i].setPosition(left,top);
 			}
@@ -81,6 +90,9 @@ puzzle.prototype = {
 		for (var i in this._piecesOnTarget){
 			if (this._piecesOnTarget[i] != piece){
 				pcs.push(this._piecesOnTarget[i]);
+			} else {
+				
+				console.log('asdfsadfdsa')
 			}
 		}
 		this._piecesOnTarget = pcs;
