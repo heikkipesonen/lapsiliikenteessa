@@ -44,7 +44,7 @@ $.fn.extend({
 	puzzle:function(){
 		return new puzzle(this);
 	},
-	game:function(){
-		return new game(this);
+	scroller:function(){
+		return new scroller(this);
 	}
 })

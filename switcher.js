@@ -184,7 +184,29 @@ switcher.prototype = {
 		var lastStep = 0,
 			me = this;
 
-		this.move(distance);
+		if (!this._dummy){
+			this._dummy = $('<div />');
+		}
+
+		this._animating = true;
+		this._dummy.stop();
+		this._dummy.css('width','100px');
+
+		this._dummy.animate({
+			width:0
+		},{
+			step:function(step){
+				var cdist = (step-100) * (distance/100);					
+				me.move( -(cdist-lastStep));
+				lastStep = cdist;
+			},
+			complete:function(){
+				me._animating = false;
+			},
+			duration: duration || 200
+		});			
+
+		
 	},
 	setList:function(list){
 		this._items = list;

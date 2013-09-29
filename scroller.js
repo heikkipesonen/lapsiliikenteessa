@@ -63,24 +63,15 @@ scroller.prototype = {
 			});
 		});
 
-/*
-
-
-		this._panes.each(function(){
-			$(this).css({
-				position:'absolute',
-				top:'0px',
-				width:me._container.width(),
-				height:'100%',
-				left: (me._paneContainer.innerWidth() / 3) * counter
-			});
-			counter++;
-		});
-*/
-
 		if (this._visiblePane){
 			this.showPane(this._visiblePane);
 		}
+	},
+	next:function(){
+		return this._visiblePane.next();
+	},
+	prev:function(){
+		return this._visiblePane.prev();
 	},
 	showPane:function(pane){
 		if (typeof(pane) == 'string'){

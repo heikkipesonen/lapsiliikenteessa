@@ -9,7 +9,7 @@
 	<script type="text/javascript" src="events.js"></script>
 	<script type="text/javascript" src="draggable.js"></script>
 	<script type="text/javascript" src="puzzle.js"></script>
-	<script type="text/javascript" src="game.js"></script>
+	<script type="text/javascript" src="scroller.js"></script>
 
 	<script type="text/javascript" src="switcher.js"></script>
 
@@ -103,7 +103,7 @@ table {
 		overflow: hidden;
 	}	
 
-	
+	/*
 	.pane-container{
 		position: absolute;
 		top: 64px;
@@ -136,10 +136,10 @@ table {
 		right: 0px;
 	}
 
+*/
 	.pane-selector{
 		height: 64px;
 	}
-
 	.pane-selector>div{
 		height: 100%;
 		padding: 0px;
@@ -262,7 +262,7 @@ $(function(){
 
 
 
-	var g = $('#game-1').game();
+	var g = $('#game-1').scroller();
 
 			var scene_1 = $('#puzzle-1').puzzle();
 			var scene_2 = $('#puzzle-2').puzzle();
@@ -298,6 +298,7 @@ $(function(){
 	});
 
 	g.showPane('#left-pane');
+	console.log( g.next() );
 
 });
 
@@ -355,16 +356,17 @@ $(function(){
 						<div class="piece" id="3-piece-3" target="#3-slot-3"></div>
 						<div class="piece" id="3-piece-4" target="#3-slot-4"></div>
 						
-						<div class="piece" id="3-piece-5" target="#3-slot-5"></div>
-
 						<div class="slot" id="3-slot-1"></div>
 						<div class="slot" id="3-slot-2"></div>
 						<div class="slot" id="3-slot-3"></div>
 						<div class="slot" id="3-slot-4"></div>
-						<div class="slot" id="3-slot-5"></div>	
+					
 					</div>
 
 				</div>
+
+	<div id="homo-pane" class="pane scenario" scenario="dressup" scenario-name="homo">
+	</div>
 
 				<div id="right-pane" class="pane scenario" scenario="crossroad" scenario-name="tien ylitys">
 					<div id="puzzle-3" class="puzzle">

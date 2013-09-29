@@ -161,5 +161,15 @@ draggable.prototype = {
 	},
 	getTarget:function(){
 		return this._target;
+	},
+	getCss:function(){
+		return [
+			'#'+this._element.attr('id'),
+			'{',
+				'position:absolute',
+				'left:'+this.getElementPosition().left+';',
+				'top:'+this.getElementPosition().top+';',
+			'}',
+		].join('');
 	}
 }
