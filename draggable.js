@@ -36,53 +36,63 @@ draggable.prototype = {
 		var me = this;
 
 		this._element.hammer().on('dragstart',function(e){
-			e.preventDefault();
-			me._lastEvent = false;
-			me._dragStartPosition = me.getElementPosition();
-			
-			me.fire('dragstart',me);
-
-			if (me._target){
-				me._target.addClass('targeted');
-			}
+			me._dragStart(e);
 		});
 
 		this._element.hammer().on('drag',function(e){
-			e.preventDefault();
-			if (!me._lastEvent){
-				try{
-					me.move(e.gesture.deltaX,e.gesture.deltaY);
-					me._lastEvent = e;
-				} catch (e){
-					me.error(e);
-				}
-			} else {				
-				if (e.timeStamp - me._lastEvent.timeStamp > me._delay){			
-					try{		
-						me.move(e.gesture.deltaX - me._lastEvent.gesture.deltaX ,e.gesture.deltaY - me._lastEvent.gesture.deltaY );
-						me._lastEvent = e;
-					} catch(e) {
-						me.error(e);
-					}
-				}
-			}
+			me._drag(e);
 		});
 
 		this._element.hammer().on('dragend',function(e){
-			me._lastEvent = false;		
+			me._dragEnd(e);
+		});
 
-			if (me._target){
-	
-				if (me.checkPosition()){
-					me.fire('onTarget',me);
-				}
+		this._element._draggable = this;
+	},
+	_dragStart:function(e){
+		e.preventDefault();
+		this._lastEvent = false;
+		this._dragStartPosition = this.getElementPosition();
+		
+		this.fire('dragstart',this);
 
-				me._target.removeClass('targeted');
+		if (this._target){
+			this._target.addClass('targeted');
+		}
+	},
+	_dragEnd:function(e){
+		this._lastEvent = false;		
+
+		if (this._target){
+
+			if (this.checkPosition()){
+				this.fire('onTarget',this);
 			}
 
-			me.fire('dragend',me);
+			this._target.removeClass('targeted');
+		}
 
-		});
+		this.fire('dragend',this);
+	},
+	_drag:function(e){		
+		e.preventDefault();
+		if (!this._lastEvent){
+			try{
+				this.move(e.gesture.deltaX,e.gesture.deltaY);
+				this._lastEvent = e;
+			} catch (e){
+				this.error(e);
+			}
+		} else {				
+			if (e.timeStamp - this._lastEvent.timeStamp > this._delay){			
+				try{		
+					this.move(e.gesture.deltaX - this._lastEvent.gesture.deltaX ,e.gesture.deltaY - this._lastEvent.gesture.deltaY );
+					this._lastEvent = e;
+				} catch(e) {
+					this.error(e);
+				}
+			}
+		}
 	},
 	revert:function(){
 		this.setPosition( this._dragStartPosition.left, this._dragStartPosition.top );
@@ -100,6 +110,9 @@ draggable.prototype = {
 
 				var pos = this._position,
 					tpos = this._target.position();
+// console.log(this._target[0].getBoundingClientRect())
+//					console.log(tpos);
+//					console.log(this._target.offset());
 
 				if (pos.top + this._element.outerHeight() > tpos.top &&
 					pos.left + this._element.outerWidth() > tpos.left &&
@@ -125,8 +138,8 @@ draggable.prototype = {
 		return {
 			top:this._limiter.position().top,
 			left:this._limiter.position().left,
-			right: this._limiter.position().left + this._limiter.width(),
-			bottom:this._limiter.position().top + this._limiter.height(),
+			right: this._limiter.width(),
+			bottom:this._limiter.height(),
 		}
 	},
 	setPosition:function(x,y){

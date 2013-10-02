@@ -1,100 +1,75 @@
-function scroller(container){
+function game(container){
 	this._events = new events(this);
 	this._container = $(container);
-	this._paneContainer = this._container.find('.pane-container');
-	this._panes = this._container.find('.pane');
 
-	this._paneSelector = this._container.find('.pane-selector');
-
-	var me = this;
-
-	this._panes.each(function(){
-		var selector = $('<div class="pane-select" show-pane="'+$(this).attr('id')+'"></div>');
-		selector.append( '<h3>'+$(this).attr('scenario-name')+'</h3>' );
-		me._paneSelector.append( selector );
-	});
-
-	this.scale();
-
-	this._paneSelector.hammer().on('tap','.pane-select',function(e){
-		me.showPane( me.getPane($(this).attr('show-pane')) );
-	});
-
-	$(window).resize(function(){
-		me.scale();
-	})
+	this._scenes = [];
+	this.init();
 }
 
-scroller.prototype = {
-	getPane:function(id){
-		return this._container.find('#'+id);
-	},
-	scale:function(){
-		var count = this._paneSelector.children().length,
-			w = this._paneSelector.innerWidth() / count,
-			me = this,
-			counter = 0;
+game.prototype = {
+	init:function(){
+		var me = this;
+		this._paneSelector = $('<div class="pane-selector"></div>');
+		this._paneContainer = $('<div class="pane-container"></div>');
+				
+		this._container.append(this._paneSelector).append(this._paneContainer);
 
+		this._container.find('.scenario').each(function(){
+			var e = $(this);
+			var container = $('<div></div>');
+			var name = e.attr('name').replace(' ','');
 
-		this._paneContainer.css({
-			position:'absolute',
-			top: this._paneSelector.outerHeight(),
-			left:'0px',
-			width:this._container.innerWidth()*this._panes.length,
-			height:this._container.innerHeight() - this._paneSelector.outerHeight()
+			container.attr('id', 'scenario-'+name)
+				.attr('scenario-name',name )
+				.attr('name',e.attr('name') )
+				.addClass('pane');
+			
+			me._paneContainer.append(container.append(this));
+			me._setScene(this);
 		});
+
+
+		this._scroll = this._container.scroller();
+	},
+	_setScene:function(scene){
+		scene = $(scene);
+		var me = this;
+
+		if (scene.hasClass('puzzle')){
+			
+			var g = scene.puzzle();
+			g.reset();
 		
-		var left = 0;
-
-		this._panes.each(function(){
-			$(this).css({
-				position:'absolute',
-				top:'0px',
-				left:left,
-				height:me._paneContainer.innerHeight(),
-				width:me._container.innerWidth()
-			});		
-			left += $(this).outerWidth();
-			console.log(left);
-		});
-		this._paneSelector.children().each(function(){
-			$(this).css({
-				width:w,
+			if (scene.hasClass('shuffle')){
+				g.shuffle();
+			}
+			
+			g.on('complete',function(e){
+				me._next(scene,this,e);
 			});
-		});
 
-/*
-
-
-		this._panes.each(function(){
-			$(this).css({
-				position:'absolute',
-				top:'0px',
-				width:me._container.width(),
-				height:'100%',
-				left: (me._paneContainer.innerWidth() / 3) * counter
+			scene.find('.draggable').each(function(){
+				$(this).draggable();
 			});
-			counter++;
-		});
-*/
 
-		if (this._visiblePane){
-			this.showPane(this._visiblePane);
+			this._scenes.push(g);
 		}
 	},
-	showPane:function(pane){
-		if (typeof(pane) == 'string'){
-			pane = this._container.find(pane);
+	_next:function(container){		
+		if (!this.isComplete()){
+			this._scroll.next();
+			this.fire('next',this);
+		} else {
+			this.fire('complete',this);
 		}
-		if (pane){		
-			var left = pane.position().left;
-
-			this._paneContainer.transit({
-				left:-left
-			},300);
-
-			this.fire('showpane',pane);
-			this._visiblePane = pane;
+	},
+	isComplete:function(){
+		is = true;
+		for (var i in this._scenes){
+			if (!this._scenes[i].isComplete()){
+				is = false;
+			}
 		}
-	}
+		return is;
+	},
 }

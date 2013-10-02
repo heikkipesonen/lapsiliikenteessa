@@ -10,14 +10,16 @@ function scroller(container){
 
 	this._panes.each(function(){
 		var selector = $('<div class="pane-select" show-pane="'+$(this).attr('id')+'"></div>');
-		selector.append( '<h3>'+$(this).attr('scenario-name')+'</h3>' );
+		selector.append( '<h3>'+$(this).attr('name')+'</h3>' );
 		me._paneSelector.append( selector );
 	});
+
+	this._visiblePane = this._panes.first();
 
 	this.scale();
 
 	this._paneSelector.hammer().on('tap','.pane-select',function(e){
-		me.showPane( me.getPane($(this).attr('show-pane')) );
+		me.showPane( me.getPane( $(this).attr('show-pane')) );
 	});
 
 	$(window).resize(function(){
@@ -54,8 +56,7 @@ scroller.prototype = {
 				height:me._paneContainer.innerHeight(),
 				width:me._container.innerWidth()
 			});		
-			left += $(this).outerWidth();
-			console.log(left);
+			left += $(this).outerWidth();			
 		});
 		this._paneSelector.children().each(function(){
 			$(this).css({
@@ -68,24 +69,31 @@ scroller.prototype = {
 		}
 	},
 	next:function(){
-		return this._visiblePane.next();
+		return this.showPane(this._visiblePane.next());
 	},
 	prev:function(){
-		return this._visiblePane.prev();
+		return this.showPane(this._visiblePane.prev());
 	},
 	showPane:function(pane){
 		if (typeof(pane) == 'string'){
 			pane = this._container.find(pane);
 		}
+
 		if (pane){		
-			var left = pane.position().left;
+			if (pane.position()){
 
-			this._paneContainer.transit({
-				left:-left
-			},300);
+				var left = pane.position().left;
 
-			this.fire('showpane',pane);
-			this._visiblePane = pane;
+				this._paneContainer.transit({
+					left:-left
+				},300);
+
+				this.fire('showpane',pane);
+				this._visiblePane = pane;
+				return true;
+			} else {
+				return false;
+			}
 		}
 	}
 }

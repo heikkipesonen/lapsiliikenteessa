@@ -11,7 +11,8 @@
 	<script type="text/javascript" src="puzzle.js"></script>
 	<script type="text/javascript" src="scroller.js"></script>
 
-	<script type="text/javascript" src="switcher.js"></script>
+	
+	<script type="text/javascript" src="game.js"></script>
 
 </head>
 
@@ -66,7 +67,6 @@ table {
 		width: 100%;
 		height: 100%;
 		top: 0%;
-		border: 1px solid #d00;
 		position: absolute;
 		overflow: hidden;
 	}
@@ -145,7 +145,7 @@ table {
 		padding: 0px;
 		margin: 0px;
 		display: inline-block;
-		background-color: #d00;
+		
 	}
 
 	.pane-selector>div:hover{
@@ -158,7 +158,8 @@ table {
 
 	.pane-selector h3{
 		font-size:30pt;
-		color: #fff;
+		color: #444;
+		text-align: center;
 	}
 
 	
@@ -222,6 +223,9 @@ table {
 		position: absolute;
 		right: calc(50% - 172px);
 		bottom: 0px;
+	}
+
+	.ukko{		
 		width: 345px;
 		height: 392px;
 	}
@@ -255,52 +259,42 @@ table {
 		position: relative;
 	}
 
+	#puzzle-2 .slot{
+		position: absolute;
+		border: 1px solid #0d0;
+	}
+
+	#p2-slot-1{
+		left: 25%;
+		top: 25%;
+	}
+
+	#p2-slot-2{
+		left: calc(25% + 202px);
+		top: 25%;
+	}
+
+	#p2-slot-3{
+		top: calc(25% + 202px);
+		left: 25%;
+	}
+
+	#p2-slot-4{
+		top: calc(25% + 202px);
+		left: calc(25% + 202px);
+	}
+
+
+
 </style>
 <script type="text/javascript">
 	
 $(function(){
 
-
-
-	var g = $('#game-1').scroller();
-
-			var scene_1 = $('#puzzle-1').puzzle();
-			var scene_2 = $('#puzzle-2').puzzle();
-			var scene_3 = $('#puzzle-3').puzzle();
-
-	scene_2.on('complete',function(pcs){
-		g.showPane('#right-pane');
-
-	})
-
-	scene_1.on('complete',function(){
-		g.showPane('#middle-pane');
-		scene_1.reset();
-	});
-	scene_3.on('complete',function(pcs){
-		alert('ok');
-	})
-
-	g.on('showpane',function(e){
-		if (e.attr('id') == 'left-pane'){
-			scene_1.shuffle();
-			scene_1.reset();
-		} else if (e.attr('id') == 'middle-pane'){
-				scene_2.reset();
-				scene_2.shuffle();
-				
-
-		} else if (e.attr('id') == 'right-pane'){
-
-				scene_3.reset();
-				scene_3.shuffle();
-		}
-	});
-
-	g.showPane('#left-pane');
-	console.log( g.next() );
+	var g = new game('#game-1');
 
 });
+
 
 </script>
 <body>
@@ -310,71 +304,56 @@ $(function(){
 
 
 		<div id="game-1" class="game">	
-			<div class="pane-selector">
-				
+			<div id="puzzle-1" class="scenario puzzle shuffle" name="pukeutuminen">
+				<div class="piece" id="pipo" target="#ukko-head">
+					<img src="img/kypara.png" alt="">
+				</div>
+				<div class="piece" id="heijastin" target="#ukko-heijastin">
+					<img src="img/heijastin.png" alt="">
+				</div>
+				<!--
+				<div class="piece" id="kengat" target="#ukko-jalat"></div>
+				<div class="piece" id="takki" target="#ukko-torso"></div>
+				-->
+
+				<div id="puku-ukko" class="ukko">
+					<img src="img/ukko_vihrea.png" style="width:100%;height:100%;" alt="">
+				</div>								
+				<div class="slot" id="ukko-head"></div>
+				<div class="slot" id="ukko-heijastin"></div>
+				<!-- 
+				<div class="slot" id="ukko-torso"></div>
+				<div class="slot" id="ukko-jalat"></div>
+					-->						
 			</div>
 
-			<div class="pane-container">
+			<div id="puzzle-2" class="scenario puzzle shuffle" name="liikennevalo">
+				<div class="piece" id="3-piece-1" target="#p2-slot-1">
+					<img src="img/valo_top_left.png" alt="">
+				</div>
+				<div class="piece" id="3-piece-2" target="#p2-slot-2">
+					<img src="img/valo_top_right.png" alt="">
+				</div>
+				<div class="piece" id="3-piece-3" target="#p2-slot-3">
+					<img src="img/valo_bottom_left.png" alt="">
+				</div>
+				<div class="piece" id="3-piece-4" target="#p2-slot-4">
+					<img src="img/valo_bottom_right.png" alt="">
+				</div>
 				
-				<div id="left-pane" class="pane scenario" scenario="dressup" scenario-name="pukeutuminen">
+					<div class="slot " id="p2-slot-1"></div>
+					<div class="slot " id="p2-slot-2"></div>
+					<div class="slot " id="p2-slot-3"></div>
+					<div class="slot " id="p2-slot-4"></div>					
+			</div>
 
-					<div id="puzzle-1" class="puzzle">
-
-						
-							<div class="piece" id="pipo" target="#ukko-head">
-								<img src="img/kypara.png" alt="">
-							</div>
-							<div class="piece" id="heijastin" target="#ukko-heijastin">
-								<img src="img/heijastin.png" alt="">
-							</div>
-							<!--
-							<div class="piece" id="kengat" target="#ukko-jalat"></div>
-							<div class="piece" id="takki" target="#ukko-torso"></div>
-							-->
-
-							<div id="puku-ukko">
-								<img src="img/ukko_vihrea.png" style="width:100%;height:100%;" alt="">
-							</div>								
-							<div class="slot" id="ukko-head"></div>
-							<div class="slot" id="ukko-heijastin"></div>
-							<!-- 
-							<div class="slot" id="ukko-torso"></div>
-							<div class="slot" id="ukko-jalat"></div>
-							-->
-						
-					</div>
-
-				
+			<div id="puzzle-3" class="scenario puzzle" name="tien ylitys">
+				<div class="piece ukko" id="2-piece-1" target="#2-slot-1">
+					<img src="img/ukko_vihrea.png" style="width:100%;height:100%;" alt="">					
 				</div>
-
-
-				<div id="middle-pane" class="pane scenario" scenario="puzzle" scenario-name="liikennevalo">
-					
-					<div id="puzzle-2" class="puzzle">
-						<div class="piece" id="3-piece-1" target="#3-slot-1"></div>
-						<div class="piece" id="3-piece-2" target="#3-slot-2"></div>
-						<div class="piece" id="3-piece-3" target="#3-slot-3"></div>
-						<div class="piece" id="3-piece-4" target="#3-slot-4"></div>
-						
-						<div class="slot" id="3-slot-1"></div>
-						<div class="slot" id="3-slot-2"></div>
-						<div class="slot" id="3-slot-3"></div>
-						<div class="slot" id="3-slot-4"></div>
-					
-					</div>
-
+				<div class="slot" id="2-slot-1" style="width:30%;height:50%;right:0px;bottom:10%">
+					<img src="img/koulu.png" style="width:100%;height:100%;" alt="">					
 				</div>
-
-	<div id="homo-pane" class="pane scenario" scenario="dressup" scenario-name="homo">
-	</div>
-
-				<div id="right-pane" class="pane scenario" scenario="crossroad" scenario-name="tien ylitys">
-					<div id="puzzle-3" class="puzzle">
-						<div class="piece" id="2-piece-1" target="#2-slot-1" style="width:20%;height:30%;bottom:0px"></div>
-						<div class="slot" id="2-slot-1" style="width:30%;height:50%;right:0px;bottom:0px"></div>
-					</div>
-				</div>
-
 			</div>
 		</div>
 

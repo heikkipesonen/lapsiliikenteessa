@@ -11,9 +11,8 @@ puzzle.prototype = {
 	_init:function(){
 		var me = this;
 		var pcs = this._element.find('.piece');
-		var slots =this._element.find('.slot');			
 
-		this._slotCount = slots.length;
+		this._slotCount = this._element.find('.slot').length;
 
 		this._container = $(this._element.attr('container'));
 		if (!this.container || this._container.length < 1){
@@ -21,14 +20,14 @@ puzzle.prototype = {
 		} 
 
 		$(pcs).each(function(){
-			var pc = $(this).draggable( $(this).attr('target'),this._container);
+			var pc = $(this).draggable( me._element.find( $(this).attr('target') ), me._container);
 
 			pc.on('onTarget',function(e){
 				me._pieceOnTarget(this);
 			});
 
 			pc.on('dragstart',function(piece){
-				me.removeOnTarget(piece);
+				me._removeOnTarget(piece);
 			});
 
 			me._pieces.push( pc );
@@ -59,7 +58,6 @@ puzzle.prototype = {
 		}
 	},
 	isComplete:function(){
-		console.log(this._slotCount +'-'+ this.getPiecesOnTarget().length );
 		if (this.getPiecesOnTarget().length == this._slotCount){
 			return true;
 		} else {
@@ -85,7 +83,7 @@ puzzle.prototype = {
 		}
 		return false;
 	},
-	removeOnTarget:function(piece){
+	_removeOnTarget:function(piece){
 		var pcs = [];
 		for (var i in this._piecesOnTarget){
 			if (this._piecesOnTarget[i] != piece){
