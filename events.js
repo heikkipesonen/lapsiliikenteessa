@@ -26,7 +26,7 @@ events.prototype = {
 	_fire : function(evt,data,e){		
 		for (var i in this._listeners['all']){			
 			if (this._listeners['all'][i]!=undefined && typeof(this._listeners['all'][i])== 'function'){						
-				this._listeners['all'][i].call(this._parent,evt,data,e);
+				this._listeners['all'][i].call(this._parent,i,evt,data,e);
 			}
 		}
 		if (this._listeners[evt]!=undefined){

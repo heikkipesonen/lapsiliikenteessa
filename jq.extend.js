@@ -32,17 +32,14 @@ $.fn.extend({
 		}
 	},
 	getCenter:function(){
+		/*
 		if (!this._translated){
-			return {left: $(this).position().left + $(this).outerWidth()/2 , top:$(this).position().top+ $(this).outerHeight()/2};
+		
 		} else {			
 			return {left: this._translated.left + $(this).outerWidth()/2 , top:this._translated.top+ $(this).outerHeight()/2};
 		}
-	},
-	draggable:function(target,limit,opts){
-		return new draggable(this,target,limit,opts);
-	},
-	puzzle:function(){
-		return new puzzle(this);
+		*/
+			return {left: $(this).offset().left + $(this).outerWidth()/2 , top:$(this).offset().top+ $(this).outerHeight()/2};
 	},
 	scroller:function(){
 		return new scroller(this);

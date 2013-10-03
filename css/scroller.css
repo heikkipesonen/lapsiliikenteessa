@@ -1,0 +1,28 @@
+.pane-selector{
+	height: 64px;
+}
+.pane-selector>div{
+	height: 100%;
+	padding: 0px;
+	margin: 0px;
+	display: inline-block;
+	
+}
+
+.pane-selector>div:hover{
+	opacity: 0.4;
+}
+
+.pane p{
+	font-size: 400px;
+}
+
+.pane-selector h3{
+	font-size:30pt;
+	color: #444;
+	text-align: center;
+}
+
+.pane-select.selected{
+	text-decoration: underline;
+}

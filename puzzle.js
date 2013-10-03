@@ -1,3 +1,9 @@
+$.fn.extend({
+	puzzle:function(){
+		return new puzzle(this);
+	}
+})
+
 function puzzle(container){
 	this._events = new events(this);
 	this._element = $(container);
@@ -35,7 +41,13 @@ puzzle.prototype = {
 
 		//this.shuffle();
 	},
+	start:function(){
+		return true;
+	},
 	reset:function(){
+		if (this._element.hasClass('shuffle')){
+			this.shuffle();
+		}
 		this._piecesOnTarget = [];
 	},
 	shuffle:function(piece){
@@ -109,5 +121,8 @@ puzzle.prototype = {
 				this.fire('complete',this.getPiecesOnTarget());
 			}
 		}
+	},
+	cancel:function(){
+		return true;
 	}
 }

@@ -1,6 +1,11 @@
 <html>
 <head>
 	<meta charset="utf-8">
+	
+	<meta name="viewport" content="user-scalable=1.0,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="format-detection" content="telephone=no">
+
 	<script type="text/javascript" src="jquery-2.0.0.min.js"></script>
 	<script type="text/javascript" src="jquery.hammer.js"></script>
 	<script type="text/javascript" src="jquery.transit.js"></script>
@@ -8,91 +13,25 @@
 	<script type="text/javascript" src="jq.extend.js"></script>
 	<script type="text/javascript" src="events.js"></script>
 	<script type="text/javascript" src="draggable.js"></script>
-	<script type="text/javascript" src="puzzle.js"></script>
 	<script type="text/javascript" src="scroller.js"></script>
 
+
+	<script type="text/javascript" src="scenario.js"></script>
+	<script type="text/javascript" src="puzzle.js"></script>
+	<script type="text/javascript" src="delay.js"></script>
 	
 	<script type="text/javascript" src="game.js"></script>
+
+	<link rel="stylesheet" href="css/reset.css">
+	<link rel="stylesheet" href="css/main.css">
+	<link rel="stylesheet" href="css/scroller.css">
 
 </head>
 
 <style>
- html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
-b, u, i, center,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed, 
-figure, figcaption, footer, header, hgroup, 
-menu, nav, output, ruby, section, summary,
-time, mark, audio, video {
-	margin: 0;
-	padding: 0;
-	border: 0;
-	font-size: 100%;
-	font: inherit;
-	vertical-align: baseline;
-}
-/* HTML5 display-role reset for older browsers */
-article, aside, details, figcaption, figure, 
-footer, header, hgroup, menu, nav, section {
-	display: block;
-}
-body {
-	line-height: 1;
-}
-ol, ul {
-	list-style: none;
-}
-blockquote, q {
-	quotes: none;
-}
-blockquote:before, blockquote:after,
-q:before, q:after {
-	content: '';
-	content: none;
-}
-table {
-	border-collapse: collapse;
-	border-spacing: 0;
-}
-
-	#wrapper{
-		font-family: arial, helvetica;
-		left:0%;
-		width: 100%;
-		height: 100%;
-		top: 0%;
-		position: absolute;
-		overflow: hidden;
-	}
-
-	*{
-		-webkit-user-select: none;
-	}
-
 	.targeted{
 		background-color: rgba(255,200,200,0.7);
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 	.game{
 		position: absolute;
@@ -102,66 +41,6 @@ table {
 		height: 100%;
 		overflow: hidden;
 	}	
-
-	/*
-	.pane-container{
-		position: absolute;
-		top: 64px;
-		left: 0px;
-		width: 300%;
-		overflow: hidden;
-		height: calc(100% - 64px);
-	}	
-
-	.pane{
-		position: absolute;
-		height: 100%;
-		margin: 0px;
-		padding: 0px;
-		display: inline-block;
-		width: calc(100% / 3);
-		top: 0px;
-		border: 1px solid #d00;
-	}
-
-	.pane:first-child{
-		left: 0px;
-	}
-
-	.pane:nth-child(2){
-		left: calc(100% / 3);
-	}
-
-	.pane:last-child{
-		right: 0px;
-	}
-
-*/
-	.pane-selector{
-		height: 64px;
-	}
-	.pane-selector>div{
-		height: 100%;
-		padding: 0px;
-		margin: 0px;
-		display: inline-block;
-		
-	}
-
-	.pane-selector>div:hover{
-		opacity: 0.4;
-	}
-
-	.pane p{
-		font-size: 400px;
-	}
-
-	.pane-selector h3{
-		font-size:30pt;
-		color: #444;
-		text-align: center;
-	}
-
 	
 	.puzzle{
 		position: absolute;
@@ -173,14 +52,12 @@ table {
 
 
 	.piece, .slot{
-		position: absolute;
-		border: 1px solid #d00;
 		z-index: 100;
 	}
 	
 	.piece{
 		z-index: 101;
-		background-color: rgba(255,200,200,0.5);
+		/*background-color: rgba(255,200,200,0.5);*/
 	}
 
 	.piece img, .slot img{
@@ -192,10 +69,10 @@ table {
 
 
 	#puzzle-1{
-		width: 80%;
-		height: 80%;
-		top: 10%;
-		left: 10%;
+		width: 100%;
+		height: 100%;
+		top: 0%;
+		left: 0%;
 	}
 
 
@@ -225,27 +102,35 @@ table {
 		bottom: 0px;
 	}
 
+	.ukko-container{
+		position: absolute;
+
+		width: 400px;
+		height: 400px;
+	
+		top: calc(50% - 200px);
+		left: calc(50% - 200px);
+
+	}
+
 	.ukko{		
+		top: 50px;
 		width: 345px;
 		height: 392px;
 	}
 
-	#ukko-jalat{
-		bottom: 0px;
-		right: calc(50% - 64px);
-	}
-
-	#ukko-torso{
-		bottom: 64px;
-		right: calc(50% - 96px);
+	.ukko>div{
+		border: 1px solid #d00;
 	}
 
 	#ukko-head{
-		bottom: 144px;
-		right: calc(50% - 110px);
+		position: absolute;
+		left:calc(50% - 110px);
+		top: -50px;
 	}
 
 	#ukko-heijastin{
+		position: absolute;
 		bottom: 8px;
 		right: 55%;
 	}
@@ -284,13 +169,21 @@ table {
 		left: calc(25% + 202px);
 	}
 
+	.road{
+		width: 20%;
+		height: 100%;
+		position: absolute;
+		left: 30%;
+		top: 0%;
+		background-color: #444;
+	}
 
 
 </style>
 <script type="text/javascript">
 	
 $(function(){
-
+		document.body.addEventListener('touchmove',function(event){event.preventDefault()});
 	var g = new game('#game-1');
 
 });
@@ -302,30 +195,93 @@ $(function(){
 
 
 
-
 		<div id="game-1" class="game">	
+	
+			<!--
+
+					puzzle scenario
+
+						scenario -> puzzle defines this container as a puzzle game
+						puzzle contains pieces (class="piece") which have target slots where
+						they fit in, defined by selector in "target" attribute
+
+						puzzle slots (class="slot") are the target slots for pieces.
+
+						id:s must be unique, and must be present in each slot and piece.
+
+
+
+						example:
+
+						define the puzzle
+
+						<div id="puzzle-1" class="scenario puzzle">
+
+							define piece-1 to fit into slot-1:
+								<div class="piece" id="piece-1" target="slot-1"></div>
+							
+							define the slot for piece-1
+								<div class="slot" id="slot-1"></div>
+
+						</div>
+
+						
+			-->
+	
 			<div id="puzzle-1" class="scenario puzzle shuffle" name="pukeutuminen">
-				<div class="piece" id="pipo" target="#ukko-head">
-					<img src="img/kypara.png" alt="">
-				</div>
-				<div class="piece" id="heijastin" target="#ukko-heijastin">
-					<img src="img/heijastin.png" alt="">
-				</div>
+				
 				<!--
 				<div class="piece" id="kengat" target="#ukko-jalat"></div>
 				<div class="piece" id="takki" target="#ukko-torso"></div>
 				-->
 
-				<div id="puku-ukko" class="ukko">
-					<img src="img/ukko_vihrea.png" style="width:100%;height:100%;" alt="">
-				</div>								
-				<div class="slot" id="ukko-head"></div>
-				<div class="slot" id="ukko-heijastin"></div>
+				<div class="ukko-container">				
+					<div id="puku-ukko" class="ukko">
+
+						<img src="img/ukko_vihrea.png" style="width:100%;height:100%;" alt="">
+		
+
+
+						<div class="slot" id="ukko-head"></div>
+						<div class="slot" id="ukko-heijastin"></div>
+					</div>								
+
+				</div>
+				<div class="piece" id="pipo" target="#ukko-head">
+					<img src="img/kypara.png" alt="">
+				</div>
+				
+				<div class="piece" id="heijastin" target="#ukko-heijastin">
+					<img src="img/heijastin.png" alt="">
+				</div>
+				
 				<!-- 
 				<div class="slot" id="ukko-torso"></div>
 				<div class="slot" id="ukko-jalat"></div>
 					-->						
 			</div>
+
+				<!--
+			
+						delay scenario
+
+
+							scenario stays at the screen for specified amount of time
+
+							time delay is specified in attribute "delay" as milliseconds
+							(1000 = 1 second)
+
+				-->
+			
+			<div id="puzzle-18778678" class="scenario delay" delay="3000" name="pojotus">
+				
+
+				<div id="puku-ukko" class="ukko">
+
+					<img src="img/ukko_vihrea.png" style="width:100%;height:100%;" alt="">
+				</div>								
+			</div>
+
 
 			<div id="puzzle-2" class="scenario puzzle shuffle" name="liikennevalo">
 				<div class="piece" id="3-piece-1" target="#p2-slot-1">
@@ -344,16 +300,23 @@ $(function(){
 					<div class="slot " id="p2-slot-1"></div>
 					<div class="slot " id="p2-slot-2"></div>
 					<div class="slot " id="p2-slot-3"></div>
-					<div class="slot " id="p2-slot-4"></div>					
+					<div class="slot " id="p2-slot-4"></div>	
+
 			</div>
 
 			<div id="puzzle-3" class="scenario puzzle" name="tien ylitys">
+				
 				<div class="piece ukko" id="2-piece-1" target="#2-slot-1">
 					<img src="img/ukko_vihrea.png" style="width:100%;height:100%;" alt="">					
 				</div>
-				<div class="slot" id="2-slot-1" style="width:30%;height:50%;right:0px;bottom:10%">
+				<div class="slot" id="2-slot-1" style="width:30%;height:50%;right:0px;bottom:30%">
 					<img src="img/koulu.png" style="width:100%;height:100%;" alt="">					
 				</div>
+
+				<div class="road">
+
+				</div>				
+
 			</div>
 		</div>
 

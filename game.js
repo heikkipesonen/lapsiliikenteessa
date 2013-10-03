@@ -3,11 +3,11 @@ function game(container){
 	this._container = $(container);
 
 	this._scenes = [];
-	this.init();
+	this._init();
 }
 
 game.prototype = {
-	init:function(){
+	_init:function(){
 		var me = this;
 		this._paneSelector = $('<div class="pane-selector"></div>');
 		this._paneContainer = $('<div class="pane-container"></div>');
@@ -30,30 +30,35 @@ game.prototype = {
 
 
 		this._scroll = this._container.scroller();
-	},
-	_setScene:function(scene){
-		scene = $(scene);
-		var me = this;
-
-		if (scene.hasClass('puzzle')){
-			
-			var g = scene.puzzle();
-			g.reset();
 		
-			if (scene.hasClass('shuffle')){
-				g.shuffle();
+		this._scroll.on('change',function(pane,prevPane){
+			var prevScene = me._getSceneByPane(prevPane);
+			prevScene.cancel();
+
+			var scene = me._getSceneByPane(pane);
+
+			scene.reset();
+			scene.start();
+		});
+	},
+	_getSceneByPane:function(pane){
+		for (var i in this._scenes){
+			if (this._scenes[i].getElement().parent().attr('id') == pane.attr('id')){
+				return this._scenes[i];
 			}
-			
-			g.on('complete',function(e){
-				me._next(scene,this,e);
-			});
-
-			scene.find('.draggable').each(function(){
-				$(this).draggable();
-			});
-
-			this._scenes.push(g);
 		}
+		return false;
+	},
+	_setScene:function(container){
+		var me = this;
+		var scene = new scenario(container),
+			game = scene.getGame();
+
+		this._scenes.push( scene );
+
+		game.on('complete',function(e){
+			me._next(container,this,e)
+		});
 	},
 	_next:function(container){		
 		if (!this.isComplete()){
@@ -66,7 +71,9 @@ game.prototype = {
 	isComplete:function(){
 		is = true;
 		for (var i in this._scenes){
-			if (!this._scenes[i].isComplete()){
+			var game = this._scenes[i].getGame();
+			
+			if (!game.isComplete()){
 				is = false;
 			}
 		}
