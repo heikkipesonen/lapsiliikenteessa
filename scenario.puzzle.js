@@ -26,7 +26,7 @@ puzzle.prototype = {
 		} 
 
 		$(pcs).each(function(){
-			var pc = $(this).draggable( me._element.find( $(this).attr('target') ), me._container);
+			var pc = $(this).draggable( {target:me._element.find( $(this).attr('target') ), container:me._container});
 
 			pc.on('onTarget',function(e){
 				me._pieceOnTarget(this);
