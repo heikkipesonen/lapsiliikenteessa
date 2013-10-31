@@ -25,8 +25,8 @@ puzzle.prototype = {
 			this._container = this._element;
 		} 
 
-		$(pcs).each(function(){
-			var pc = $(this).draggable( {target:me._element.find( $(this).attr('target') ), container:me._container});
+		$(pcs).each(function(){			
+			var pc = $(this).draggable( {target:me._element.find( $(this).attr('target') ), limiter: me._container});
 
 			pc.on('onTarget',function(e){
 				me._pieceOnTarget(this);
@@ -36,12 +36,16 @@ puzzle.prototype = {
 				me._removeOnTarget(piece);
 			});
 
+			pc.setAbsolute();
+			
+
 			me._pieces.push( pc );
 		});
 
-		//this.shuffle();
+		this.reset();
 	},
 	start:function(){
+		this._piecesOnTarget = [];
 		return true;
 	},
 	reset:function(){
@@ -70,7 +74,7 @@ puzzle.prototype = {
 		}
 	},
 	isComplete:function(){
-		if (this.getPiecesOnTarget().length == this._slotCount){
+		if (this.getPiecesOnTarget().length == this._slotCount){						
 			return true;
 		} else {
 			return false;
@@ -98,11 +102,8 @@ puzzle.prototype = {
 	_removeOnTarget:function(piece){
 		var pcs = [];
 		for (var i in this._piecesOnTarget){
-			if (this._piecesOnTarget[i] != piece){
+			if (this._piecesOnTarget[i] != piece){				
 				pcs.push(this._piecesOnTarget[i]);
-			} else {
-				
-				console.log('asdfsadfdsa')
 			}
 		}
 		this._piecesOnTarget = pcs;
@@ -113,11 +114,11 @@ puzzle.prototype = {
 		} else {
 			piece.setOnTarget();
 
-			if (!this._hasPieceOnTarget(piece)){
+			if (!this._hasPieceOnTarget(piece)){				
 				this._piecesOnTarget.push(piece);
 			}
 
-			if (this.isComplete()){
+			if (this.isComplete()){				
 				this.fire('complete',this.getPiecesOnTarget());
 			}
 		}

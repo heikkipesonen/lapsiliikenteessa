@@ -22,12 +22,11 @@ delay.prototype = {
 
 		var me = this;
 
-		this._timeout = setTimeout(function(){
+		this._timeout = setTimeout(function(){			
 			me.fire('complete');
 		}, time);
 	},
-	cancel:function(){
-		console.log('off')
+	cancel:function(){		
 		clearTimeout( this._timeout );
 		this._timeout = false;
 	},

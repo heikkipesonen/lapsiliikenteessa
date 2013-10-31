@@ -11,21 +11,25 @@ game.prototype = {
 		var me = this;
 		this._paneSelector = $('<div class="pane-selector"></div>');
 		this._paneContainer = $('<div class="pane-container"></div>');
-				
 		this._container.append(this._paneSelector).append(this._paneContainer);
 
 		this._container.find('.scenario').each(function(){
+			
+
 			var e = $(this);
 			var container = $('<div></div>');
 			var name = e.attr('name').replace(' ','');
 
+
 			container.attr('id', 'scenario-'+name)
 				.attr('scenario-name',name )
 				.attr('name',e.attr('name') )
+				.attr('transition',e.attr('transition'))
 				.addClass('pane');
 			
 			me._paneContainer.append(container.append(this));
 			me._setScene(this);
+
 		});
 
 
@@ -56,9 +60,17 @@ game.prototype = {
 
 		this._scenes.push( scene );
 
-		game.on('complete',function(e){
+
+		/*
+		game.on('complete',function(e){			
 			me._next(container,this,e)
 		});
+		*/
+
+		scene.on('complete',function(e){
+			me._next(container,this,e)
+		});
+
 	},
 	_next:function(container){		
 		if (!this.isComplete()){

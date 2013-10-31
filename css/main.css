@@ -2,12 +2,101 @@
 	font-family: calibri;
 	left:0%;
 	width: 100%;
-	height: 90%;
-	top: 5%;
+	height: 100%;
 	position: absolute;
 	overflow: hidden;
+	background-color: #c0e8f9;
+}
+
+.hidden{
+	display: none;
+}
+
+#wrapper{
+	width: 1024px;
+	height: 700px;
+	border: 1px solid #0d0;
+
+	top: 50%;
+	left: 50%;
+	margin-top: -350px;
+	margin-left: -512px;
+}	
+
+
+
+
+.game{
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: 100%;
 }
 
 *{
 	-webkit-user-select: none;
+}
+
+
+.piece, .draggable{
+	z-index: 100;
+}
+
+.piece img{
+	width: 100%;
+	height: 100%;
+}
+
+.targeted, .selected{
+	background-color: rgba(255,200,200,0.3);
+}
+
+/*
+
+.piece, .slot{
+	position: absolute;
+	border: 1px solid #d00;
+}
+
+.draggable:after, .piece:after{
+	position: absolute;
+	content: attr(position);
+	bottom: -30px;
+	left: 0px;
+	background-color: rgb(220,220,220);
+	padding: 5px;
+}
+*/
+
+@keyframes blink{
+	0%{
+		opacity: 1;
+	}
+	50%{
+		opacity: 0.7;
+		background-color: rgba(200,255,255,0.2);
+	}
+	100%{
+		opacity: 1;
+	}
+}
+
+@-webkit-keyframes blink{
+	0%{
+		opacity: 1;
+	}
+	50%{
+		opacity: 0.7;
+		background-color: rgba(200,255,255,0.2);
+	}
+	100%{
+		opacity: 1;
+	}
+
+}
+
+.blink{
+	-webkit-animation: blink 1.5s;
+	-webkit-animation-iteration-count: infinite;
 }

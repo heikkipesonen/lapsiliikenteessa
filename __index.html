@@ -1,0 +1,229 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	
+	<meta name="viewport" content="user-scalable=1.0,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="format-detection" content="telephone=no">
+
+	<script type="text/javascript" src="../src/jquery-2.0.0.min.js"></script>
+	<script type="text/javascript" src="../src/jquery.hammer.js"></script>
+	<script type="text/javascript" src="../src/jquery.transit.js"></script>
+
+	<script type="text/javascript" src="../jq.extend/jq.extend.js"></script>
+	<script type="text/javascript" src="../events/events.js"></script>
+	<script type="text/javascript" src="../draggable/draggable.js"></script>
+	<script type="text/javascript" src="scroller.js"></script>
+
+
+	<script type="text/javascript" src="scenario.js"></script>
+	<script type="text/javascript" src="scenario.puzzle.js"></script>
+	<script type="text/javascript" src="scenario.delay.js"></script>
+	<script type="text/javascript" src="scenario.select.js"></script>
+	
+	<script type="text/javascript" src="game.js"></script>
+
+	<link rel="stylesheet" href="css/reset.css">
+	<link rel="stylesheet" href="css/main.css">
+	<link rel="stylesheet" href="css/scroller.css">
+
+	<link rel="stylesheet" href="css/puzzle.css">
+	<link rel="stylesheet" href="css/puzzle-pukeutuminen.css">
+	<link rel="stylesheet" href="css/puzzle-liikennevalot.css">
+	<link rel="stylesheet" href="css/puzzle-tienylitys.css">
+
+</head>
+
+
+<script type="text/javascript">
+	
+$(function(){
+		document.body.addEventListener('touchmove',function(event){event.preventDefault()});
+		var g = new game('#game-1');
+
+		$('img').mousedown(function(e){
+			e.preventDefault();
+		})
+});
+
+
+</script>
+<body>
+	<div id="wrapper">
+
+
+
+		<div id="game-1" class="game">	
+			<!--
+
+					puzzle scenario
+
+						scenario -> puzzle defines this container as a puzzle game
+						puzzle contains pieces (class="piece") which have target slots where
+						they fit in, defined by selector in "target" attribute
+
+						puzzle slots (class="slot") are the target slots for pieces.
+
+						id:s must be unique, and must be present in each slot and piece.
+
+
+
+						example:
+
+						define the puzzle
+
+						<div id="puzzle-1" class="scenario puzzle">
+
+							define piece-1 to fit into slot-1:
+								<div class="piece" id="piece-1" target="slot-1"></div>
+							
+							define the slot for piece-1
+								<div class="slot" id="slot-1"></div>
+
+						</div>
+
+						
+			-->
+	
+			<div id="puzzle-pukeutuminen" class="scenario puzzle" name="pukeutuminen" container="#puzzle-pukeutuminen" transition="fade" complete-delay="500">
+				
+					<div id="puku-ukko" class="ukko">
+
+						<img src="img/ukko_vihrea.png">
+						<div class="slot" id="ukko-paa"></div>
+						<div class="slot" id="ukko-liivit"></div>
+						<div class="slot" id="ukko-heijastin"></div>
+						<!--<div class="slot" id="ukko-jalat"></div>-->
+					</div>								
+
+					<div class="piece resize blink" id="pipo" target="#ukko-paa">
+						<img src="img/kypara.png" />
+					</div>
+
+					<div class="piece resize blink" id="takki" target="#ukko-liivit">
+						<img src="img/betterJacket.png" />
+					</div>
+					
+					<div class="piece resize blink" id="heijastin" target="#ukko-heijastin">
+						<img src="img/heijastin.png" />
+					</div>
+					<!--
+					<div class="piece resize" id="kengat" target="#ukko-jalat">
+						<img src="img/kengat.png" alt="">
+					</div>
+					-->
+			</div>
+				<!--
+			
+						delay scenario
+
+
+							scenario stays at the screen for specified amount of time
+
+							time delay is specified in attribute "delay" as milliseconds
+							(1000 = 1 second)
+
+				-->
+
+			
+			<div id="go-out" class="scenario delay" delay="3000" name="pojotus">
+				<div id="puku-ukko" class="ukko">
+					<img src="img/ukko_vihrea.png" />
+				</div>								
+			</div>
+
+				<!--
+
+				
+					select scenario
+
+						scenario waits until the user has selected certain item(s)
+
+
+				-->
+				
+			<div id="valo-vaihto" class="scenario select" name="valitse liikennevalo">
+				<div id="puku-ukko" class="ukko">
+					<img src="img/ukko_vihrea.png" />
+				</div>	
+				
+				<div id="valo-tolppa" class="tolppa option blink" value="valo">					
+					<img src="img/TrafficLWithRedGuy.png" />
+				</div>
+
+				<div id="valo-tolppa-2" class="tolppa option blink" value="valo">	
+					<img src="img/TrafficLWithRedGuy.png" />
+				</div>
+
+			</div>
+
+
+
+			<div id="liikennevalo" class="scenario puzzle shuffle" name="liikennevalo" complete-delay="500">				
+
+				<div class="piece resize" id="3-piece-1" target="#p2-slot-1">
+					<img src="img/GreenGuyPart1.png" alt="">
+				</div>
+				<div class="piece resize" id="3-piece-2" target="#p2-slot-2">
+					<img src="img/GreenGuyPart2.png" alt="">
+				</div>
+				<div class="piece resize" id="3-piece-3" target="#p2-slot-3">
+					<img src="img/GreenGuyPart3.png" alt="">
+				</div>
+				<div class="piece resize" id="3-piece-4" target="#p2-slot-4">
+					<img src="img/GreenGuyPart4.png" alt="">
+				</div>
+				
+				
+				<div id="valo-container">	
+					<div class="slot " id="p2-slot-1"></div>
+					<div class="slot " id="p2-slot-2"></div>
+					<div class="slot " id="p2-slot-3"></div>
+					<div class="slot " id="p2-slot-4"></div>	
+				</div>
+
+			</div>
+
+<!--
+			<div id="go-suojatie-perse" class="scenario delay" delay="2000" name="liikennevalo vaihtuu">
+				<div id="puku-ukko" class="ukko">
+					<img src="img/ukko_vihrea.png">
+				</div>								
+
+				<div id="valo-tolppa" class="tolppa" value="valo">
+					<img src="img/TrafficLWithGreenGuy.png" />					
+				</div>
+
+				<div id="valo-tolppa-2" class="tolppa" value="valo">	
+					<img src="img/TrafficLWithGreenGuy.png" />				
+				</div>
+
+			</div>
+-->
+
+			<div id="tien-ylitys" class="scenario puzzle" name="tien ylitys">
+				
+				<div class="piece ukko blink" id="puku-ukko" target="#koulu">
+					<img src="img/ukko_vihrea.png" />					
+				</div>
+				<div class="slot" id="koulu">
+										
+				</div>
+
+
+				<div id="valo-tolppa" class="tolppa" value="valo">
+					<img src="img/TrafficLWithGreenGuy.png" />					
+				</div>
+
+				<div id="valo-tolppa-2" class="tolppa" value="valo">	
+					<img src="img/TrafficLWithGreenGuy.png" />				
+				</div>
+
+
+			</div>
+		</div>
+
+
+	</div>
+</body>
+</html>

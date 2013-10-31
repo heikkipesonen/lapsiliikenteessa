@@ -10,8 +10,9 @@ scenario.prototype = {
 			this._game = this._element.delay();
 		} else if (this._element.hasClass('puzzle')){			
 			this._game = this._element.puzzle();
+		} else if (this._element.hasClass('select')){
+			this._game = this._element.select();
 		}
-
 
 		this._element.find('.draggable').each(function(){
 			$(this).draggable();
@@ -26,6 +27,20 @@ scenario.prototype = {
 			$(this).draggable();
 		});		
 		*/
+		var me = this;
+
+		this._game.on('complete',function(e){
+			if (me._element.attr('complete-delay')){
+				var dl = parseInt(me._element.attr('complete-delay'));
+
+				var d = setTimeout(function(){
+					me.fire('complete',me._game,e);		
+				},dl);
+
+			} else {
+				me.fire('complete',me._game,e);
+			}
+		})
 	},
 	reset:function(){
 		this._game.reset();

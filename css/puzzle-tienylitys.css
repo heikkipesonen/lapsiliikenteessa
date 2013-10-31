@@ -1,0 +1,12 @@
+#tien-ylitys{
+	background-image: url('../img/StreetWithSchool.png');
+}
+
+#koulu{
+	position: absolute;
+	top: 93px;
+	left: 753px;
+	
+	width: 404px;
+	height: 380px;
+}
