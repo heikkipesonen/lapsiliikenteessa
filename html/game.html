@@ -1,96 +1,55 @@
-<div id="game-1" class="game">	
-		<!--
+<div id="game-1" class="game" dev="false">	
 
-				puzzle scenario
+		<div id="feedback" class="template">
+			<div id="feedback-positive">
+				<img src="res/feedback_positive.png" />
+			</div>
+			<div id="feedback-negative">
+				<img src="res/feedback_negative.png" />
+			</div>
+		</div>
+		
 
-					scenario -> puzzle defines this container as a puzzle game
-					puzzle contains pieces (class="piece") which have target slots where
-					they fit in, defined by selector in "target" attribute
+		<div id="puzzle-pukeutuminen" feedback="true" background="img/HouseBckg.png" class="scenario puzzle" name="pukeutuminen" container="#puzzle-pukeutuminen" transition="fade" complete-delay="500" complete-score="30">
 
-					puzzle slots (class="slot") are the target slots for pieces.
-
-					id:s must be unique, and must be present in each slot and piece.
-
-
-
-					example:
-
-					define the puzzle
-
-					<div id="puzzle-1" class="scenario puzzle">
-
-						define piece-1 to fit into slot-1:
-							<div class="piece" id="piece-1" target="slot-1"></div>
-						
-						define the slot for piece-1
-							<div class="slot" id="slot-1"></div>
-
-					</div>
-
-					
-		-->
-
-		<div id="puzzle-pukeutuminen" class="scenario puzzle" name="pukeutuminen" container="#puzzle-pukeutuminen" transition="fade" complete-delay="500">
-			
-				<div id="puku-ukko" class="ukko">
-
-					<img src="img/ukko_vihrea.png">
-					<div class="slot" id="ukko-paa"></div>
-					<div class="slot" id="ukko-liivit"></div>
-					<div class="slot" id="ukko-heijastin"></div>
-					<!--<div class="slot" id="ukko-jalat"></div>-->
+				<div id="puku-ukko" class="ukko" size="251,322" position="470,350">
+					<img src="res/character_1.png">
+					<div class="slot" id="ukko-paa" position="40,5"></div>
+					<div class="slot" id="ukko-liivit" position="40,187"></div>
+					<div class="slot" id="ukko-heijastin" position="37,210"></div>
 				</div>								
 
-				<div class="piece resize blink" id="pipo" target="#ukko-paa">
-					<img src="img/kypara.png" />
+				<div class="piece" id="pipo" position="49,304" autosize="true" target="#ukko-paa" score="0">
+					<img src="res/helmet_1.png" />
 				</div>
 
-				<div class="piece resize blink" id="takki" target="#ukko-liivit">
-					<img src="img/betterJacket.png" />
+				<div class="piece" id="takki" position="27,468" autosize="true" target="#ukko-liivit"  score="10">
+					<img src="res/vest_1.png" />
 				</div>
 				
-				<div class="piece resize blink" id="heijastin" target="#ukko-heijastin">
-					<img src="img/heijastin.png" />
+				<div class="piece" id="heijastin"  position="38,512" autosize="true" target="#ukko-heijastin"  score="10">
+					<img src="res/reflector_1.png" />
 				</div>
-				<!--
-				<div class="piece resize" id="kengat" target="#ukko-jalat">
-					<img src="img/kengat.png" alt="">
-				</div>
-				-->
 		</div>
-			<!--
-		
-					delay scenario
 
 
-						scenario stays at the screen for specified amount of time
-
-						time delay is specified in attribute "delay" as milliseconds
-						(1000 = 1 second)
-
-			-->
 
 		
 		<div id="go-out" class="scenario delay" delay="3000" name="pojotus">
-			<div id="puku-ukko" class="ukko">
-				<img src="img/ukko_vihrea.png" />
+			<div id="puku-ukko" class="ukko" size="251,322" position="470,350">
+				<img src="res/character_1.png">
 			</div>								
 		</div>
 
-			<!--
-
-			
-				select scenario
-
-					scenario waits until the user has selected certain item(s)
 
 
-			-->
-			
-		<div id="valo-vaihto" class="scenario select" name="valitse liikennevalo">
-			<div id="puku-ukko" class="ukko">
-				<img src="img/ukko_vihrea.png" />
-			</div>	
+
+
+
+		<div id="valo-vaihto" background="img/EmptyStreet.png" class="scenario select" name="valitse liikennevalo">
+			<div id="puku-ukko" class="ukko" size="251,322" position="44,299">
+				<img src="res/character_1.png">
+			</div>								
 			
 			<div id="valo-tolppa" class="tolppa option blink" value="valo">					
 				<img src="img/TrafficLWithRedGuy.png" />
@@ -101,8 +60,6 @@
 			</div>
 
 		</div>
-
-
 
 		<div id="liikennevalo" class="scenario puzzle shuffle" name="liikennevalo" complete-delay="500">				
 
@@ -129,27 +86,10 @@
 
 		</div>
 
-<!--
-		<div id="go-suojatie-perse" class="scenario delay" delay="2000" name="liikennevalo vaihtuu">
-			<div id="puku-ukko" class="ukko">
-				<img src="img/ukko_vihrea.png">
-			</div>								
-
-			<div id="valo-tolppa" class="tolppa" value="valo">
-				<img src="img/TrafficLWithGreenGuy.png" />					
-			</div>
-
-			<div id="valo-tolppa-2" class="tolppa" value="valo">	
-				<img src="img/TrafficLWithGreenGuy.png" />				
-			</div>
-
-		</div>
--->
-
 		<div id="tien-ylitys" class="scenario puzzle" name="tien ylitys">
 			
-			<div class="piece ukko blink" id="puku-ukko" target="#koulu">
-				<img src="img/ukko_vihrea.png" />					
+			<div class="piece ukko blink"  size="251,322" position="44,299" id="puku-ukko" target="#koulu">
+				<img src="res/character_1.png">
 			</div>
 			<div class="slot" id="koulu">
 									

@@ -1,0 +1,10 @@
+.pane-selector{
+	position: absolute;
+	height: 64px;
+	width: 100%;
+
+	.pane-select{
+		height: 64px;
+		display: inline-block;
+	}
+}

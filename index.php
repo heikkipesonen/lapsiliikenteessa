@@ -6,6 +6,11 @@
 	
 
 <?php
+	function startsWith($haystack, $needle)
+	{
+	    return !strncmp($haystack, $needle, strlen($needle));
+	}
+
 	function addCss($filename){
 		echo '<link rel="stylesheet" type="text/css" href="'.$filename.'">';
 	}
@@ -27,7 +32,7 @@
 	$js = scandir('js');
 
 	foreach ($js as $key => $value) {
-		if ($value != '.' && $value != '..'){
+		if ($value != '.' && $value != '..' && !startsWith($value, '.')){
 			$scripts[] = 'js/'.$value;
 		}
 	}
@@ -36,7 +41,7 @@
 	$js = scandir('css');
 
 	foreach ($js as $key => $value) {
-		if ($value != '.' && $value != '..'){
+		if ($value != '.' && $value != '..' && !startsWith($value, '.')){
 			addCss('css/'.$value);
 		}
 	}
@@ -67,5 +72,11 @@
 		?>
 		</div>
 	</body>
-
+<script type="text/javascript">
+   function animate() {
+        requestAnimationFrame( animate ); // js/RequestAnimationFrame.js needs to be included too.
+        TWEEN.update();
+    }	
+    animate();
+</script>
 </html>

@@ -3,19 +3,110 @@ function game(container){
 	this._container = $(container);
 
 	this._scenes = [];
-	this._init();
+
+	this._paneSelector = $('<div class="pane-selector"></div>');
+	this._paneContainer = $('<div class="pane-container"></div>');
+	this._container.append(this._paneSelector).append(this._paneContainer);
+
+	if (this._container.attr('dev')){
+		if (this._container.attr('dev') == 'true'){
+			this._container.find('.slot, .ukko, .option, .piece').addClass('dev draggable');
+
+		}
+	}
+
+	// wait until images are loaded
+	this.preload(function(e){
+		if (e){
+			this._init();			
+		} else {
+			console.log('pere')
+		}
+	});
 }
 
 game.prototype = {
+	setSize:function(){
+		this._container.find('[size]').each(function(){
+			var size = $(this).attr('size').split(',');
+
+			$(this).css({
+				width:size[0],
+				height:size[1]
+			});							
+		});
+
+		this._container.find('[position]').each(function(){
+			var pos = $(this).attr('position').split(',');
+			console.log($(this).attr('id') + '-pos '+pos.join(':'))
+			$(this).css({
+				position:'absolute',
+				left:pos[0],
+				top:pos[1]
+			});
+		});
+
+		this._container.find('[autosize]').each(function(){
+			if ($(this).attr('autosize')=='true'){
+				
+				var img = $(this).find('img');
+				if (img.length > 0){				
+
+					$(this).css({						
+						width:img.width(),
+						height:img.height()
+					});
+
+					if ($(this).attr('target')){
+						$($(this).attr('target')).css({
+							width:img.width(),
+							height:img.height()							
+						});
+					}
+				}
+			}
+		})
+	},
+	preload:function(callback){
+		var me = this,
+			images = [],
+			counter = 0;
+
+		var timeout = setTimeout(function(){
+			if (callback){
+				callback.call(me,false);
+			}
+		},60000);
+
+		this._container.find('img').each(function(){
+			var img = new Image();
+			img.src = $(this).attr('src');
+			images.push(img);
+
+			img.onload = function(){
+				counter++;
+				chkLoaded();
+			}
+
+			img.onerror = function(){
+				counter++;
+				chkLoaded();
+			}
+
+			function chkLoaded(){
+				if (counter == images.length && callback){
+					callback.call(me, images);
+					clearTimeout(timeout);
+				}
+			}
+		});
+	},
 	_init:function(){
 		var me = this;
-		this._paneSelector = $('<div class="pane-selector"></div>');
-		this._paneContainer = $('<div class="pane-container"></div>');
-		this._container.append(this._paneSelector).append(this._paneContainer);
+		
+		this.setSize();
 
 		this._container.find('.scenario').each(function(){
-			
-
 			var e = $(this);
 			var container = $('<div></div>');
 			var name = e.attr('name').replace(' ','');
@@ -56,18 +147,16 @@ game.prototype = {
 	_setScene:function(container){
 		var me = this;
 		var scene = new scenario(container),
-			game = scene.getGame();
+			game = scene.getScenario();
 
 		this._scenes.push( scene );
 
-
-		/*
-		game.on('complete',function(e){			
-			me._next(container,this,e)
-		});
-		*/
-
 		scene.on('complete',function(e){
+			
+			if (e.getScore){
+				console.log(this.getScenario());
+				console.log(e.getScore())
+			}
 			me._next(container,this,e)
 		});
 
@@ -83,7 +172,7 @@ game.prototype = {
 	isComplete:function(){
 		is = true;
 		for (var i in this._scenes){
-			var game = this._scenes[i].getGame();
+			var game = this._scenes[i].getScenario();
 			
 			if (!game.isComplete()){
 				is = false;

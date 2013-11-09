@@ -7,9 +7,6 @@ $.fn.extend({
 function puzzle(container){
 	this._events = new events(this);
 	this._element = $(container);
-	this._piecesOnTarget = [];
-	this._pieces = [];
-	
 	this._init();
 }
 
@@ -18,6 +15,9 @@ puzzle.prototype = {
 		var me = this;
 		var pcs = this._element.find('.piece');
 
+		this._piecesOnTarget = [];
+		this._pieces = [];
+	
 		this._slotCount = this._element.find('.slot').length;
 
 		this._container = $(this._element.attr('container'));
@@ -26,7 +26,14 @@ puzzle.prototype = {
 		} 
 
 		$(pcs).each(function(){			
-			var pc = $(this).draggable( {target:me._element.find( $(this).attr('target') ), limiter: me._container});
+			var img = $(this).find('img');
+		
+			$(this).css({
+				width: img.outerWidth(),
+				height: img.outerHeight()
+			});
+
+			var pc = $(this).draggable( {target:me._element.find( $(this).attr('target') ), limiter: me._container});			
 
 			pc.on('onTarget',function(e){
 				me._pieceOnTarget(this);
@@ -35,11 +42,11 @@ puzzle.prototype = {
 			pc.on('dragstart',function(piece){
 				me._removeOnTarget(piece);
 			});
-
 			pc.setAbsolute();
 			
 
 			me._pieces.push( pc );
+
 		});
 
 		this.reset();
@@ -52,7 +59,12 @@ puzzle.prototype = {
 		if (this._element.hasClass('shuffle')){
 			this.shuffle();
 		}
+		this._element.find('.wrong').removeClass('wrong');
 		this._piecesOnTarget = [];
+
+		for (var i in this._pieces){
+			this._pieces[i].reset();
+		}
 	},
 	shuffle:function(piece){
 
@@ -107,6 +119,20 @@ puzzle.prototype = {
 			}
 		}
 		this._piecesOnTarget = pcs;
+	},
+	getScore:function(){
+		var pieces = this.getPiecesOnTarget(),			
+			total = 0;
+
+		for (var i in pieces){
+
+			total += parseInt( pieces[i].getElement().attr('score') );
+			if (parseInt( pieces[i].getElement().attr('score') ) < 1){
+				pieces[i].getElement().addClass('wrong');
+			}
+		}
+
+		return total;
 	},
 	_pieceOnTarget:function(piece){
 		if (this.hasPiece(piece.getTarget())){
