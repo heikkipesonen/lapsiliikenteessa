@@ -21,13 +21,15 @@
 
 	$scripts = array(
 		"../src/jquery-2.0.0.min.js",
-		"../src/jquery.hammer.js",	
-		"../src/jquery.transit.js",	
-		"../jq.extend/jq.extend.js",
-		"../events/events.js",
-		"../draggable/draggable.js"
 	);
-	
+
+	$lib = scandir('lib');
+
+	foreach ($lib as $key => $value) {
+		if ($value != '.' && $value != '..' && !startsWith($value, '.')){
+			$scripts[] = 'lib/'.$value;
+		}
+	}
 
 	$js = scandir('js');
 
@@ -39,7 +41,6 @@
 
 
 	$js = scandir('css');
-
 	foreach ($js as $key => $value) {
 		if ($value != '.' && $value != '..' && !startsWith($value, '.')){
 			addCss('css/'.$value);
@@ -47,36 +48,43 @@
 	}
 
 
+	$temp_assets = scandir('res');
+	$assets = array();
+	foreach ($temp_assets as $key => $value) {
+		if ($value != '.' && $value != '..' && !startsWith($value, '.')){
+			$assets[] = $value;
+		}
+	}
+
+	echo '<script type="text/javascript">';
+	echo 'var ASSETS=["'.implode($assets,'","').'"];';
+	echo '</script>';
+
 	foreach ($scripts as $script){
 		addScript($script);
 	}
-?>
 
+?>
+		<meta name="apple-mobile-web-app-capable" content="yes">
 	</head>
+	<style type="text/css">
+		body{
+			margin:0px;
+			padding:0px;
+		}
+	</style>
 	<script type="text/javascript">
 
-	$(function(){
-			document.body.addEventListener('touchmove',function(event){event.preventDefault()});
-			var g = new game('#game-1');
 
-			$('img').mousedown(function(e){
-				e.preventDefault();
-			});
+	$(function(){
+		document.body.addEventListener('touchstart',function(e){
+			e.preventDefault();
+		});
+
+		game.init();
 	});
 
 	</script>
 	<body>
-		<div id="wrapper">
-		<?php
-			include('html/game.html');
-		?>
-		</div>
 	</body>
-<script type="text/javascript">
-   function animate() {
-        requestAnimationFrame( animate ); // js/RequestAnimationFrame.js needs to be included too.
-        TWEEN.update();
-    }	
-    animate();
-</script>
 </html>

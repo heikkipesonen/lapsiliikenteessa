@@ -1,88 +1,100 @@
-function scenario(container){
-	this._events = new events(this);
-	this._element = $(container);
-	this._feedback = false;
-	this._init();
+/*
+
+	storyline, scenario for the game
+
+		runs multiple scenes in a row
+		after one completes, the next one is created and shown
+
+*/
+
+function Scenario(stage,timeline){
+	this._scenes = timeline; // timeline = array of scenario definitions given in config.js
+	this._stage = stage; // pixi stage
+	this._currentScene = false;
+	this.scene = false;
 }
 
-scenario.prototype = {
-	_init:function(){
-		if (this._element.hasClass('delay')){
-			this._scenario = this._element.delay();
-		} else if (this._element.hasClass('puzzle')){			
-			this._scenario = this._element.puzzle();
-		} else if (this._element.hasClass('select')){
-			this._scenario = this._element.select();
-		}
-
-		if (this._element.attr('background')){
-			this._element.css('background-image','url('+this._element.attr('background')+')');
-		}
-
-		this._setFeedback();
-		this._element.find('.draggable').each(function(){
-			$(this).draggable();
-		});
-
-		this._scenario.reset();
-		this._minScore = parseInt(this._element.attr('complete-score')) || false;
-		
+Scenario.prototype = {	
+	scenes:{
+		// possible scenes to use in game
+		ImagePuzzle:function(src){return new ImagePuzzle(src)},
+		PiecePuzzle:function(src){return new PiecePuzzle(src)},
+		SplashScreen:function(src){return new SplashScreen(src)},
+		Option:function(src){return new Option(src)},
+		Guide:function(src){return new Guide(src)},
+	},
+	isScene:function(type){
+		return this.scenes[type] != undefined;
+	},
+	init:function(){
+		this.setScene( this.next() );
+	},
+	setScene:function(scene){
 		var me = this;
-		this._scenario.on('complete',function(e){
-			if (me._minScore && me._scenario.getScore){
+		if (this.scenes[scene.type]){
+			this._currentScene = scene;
+			this.scene = this.scenes[scene.type](scene);
+			this.scene.onComplete = function(scene){
 				
-				if (me._minScore >= me._scenario.getScore() && me._hasFeedback()){
-					me._feedback.show(false);
-				} else {
-					me._feedback.show(true);
-					console.log(me._minScore);
-					console.log(me._scenario.getScore());
-					me._complete(e);
+				if (scene._config){				
+					if (scene._config.after){
+						// mainly used for happy-face screen, not recursive because of things and stuff
+						var _scene = me.scenes[scene._config.after.type](scene._config.after);
+						_scene.show(me._stage);
+						_scene.onComplete = function(){
+							_scene.hide();
+							me.onSceneComplete(scene);
+						}
+						return;
+					}
 				}
-
-			} else {			
-				me._complete(e);
-			}
-		});
-	},
-	_setFeedback:function(){
-		if (this._hasFeedback()){
-			this._feedback = this._element.feedback();
-			
-			var me = this;
-
-			this._feedback.on('close',function(){
-				me.reset();
-			})			
+				me.onSceneComplete(scene);
+			};
 		}
+		return this.scene;
 	},
-	_hasFeedback:function(){
-		return this._element.attr('feedback') == 'true';
-	},
-	_complete:function(e){
-		var me = this;
-		if (this._element.attr('complete-delay')){
-			var d = setTimeout(function(){
-					me.fire('complete',me._scenario,e);		
-				},parseInt(this._element.attr('complete-delay')));
+	onComplete:function(){
+		
+		console.log(this);
 
+	},
+	onSceneComplete:function(scene){
+		this.setNext();
+	},
+	show:function(){		
+		this.scene.show(this._stage);
+	},
+	hide:function(){
+		this.scene.hide();
+	},
+	setNext:function(){
+		if (this.next()){
+			this.hide();
+			this.setScene(this.next());
+			this.show();
 		} else {
-			this.fire('complete',me._scenario,e);
+			this.onComplete.call(this);
 		}
 	},
-	reset:function(){
-		this._scenario.reset();
+	next:function(){
+		if (!this._currentScene){
+			return this._scenes[0];
+		}
+
+		if (this._scenes.indexOf(this._currentScene) < this._scenes.length){						
+			return this._scenes[this._scenes.indexOf(this._currentScene) +1];
+		}
+
+		return false;
 	},
-	getElement:function(){
-		return this._element;
-	},
-	getScenario:function(){
-		return this._scenario;
-	},
-	start:function(){
-		this._scenario.start();
-	},
-	cancel:function(){
-		this._scenario.cancel();
+	prev:function(){
+		if (!this._currentScene){
+			return this._scenes[0];
+		}
+
+		if (this._scenes.indexOf(this._currentScene) > 0){
+			return this._scenes[this._scenes.indexOf(this._currentScene) -1];
+		}
+		return false;		
 	}
 }
