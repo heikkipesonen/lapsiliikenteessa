@@ -1,5 +1,4 @@
 function Guide(config){
-	Scene.call(this);
 	this.init(config);	
 }
 

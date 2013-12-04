@@ -1,6 +1,5 @@
 
 function Option(config){
-	Scene.call(this);
 	this.init(config);
 }
 

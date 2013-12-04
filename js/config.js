@@ -1,33 +1,18 @@
 // main menu screen with option buttons
-var startScreen = {
-	type:'Option', // which kind of scene , check Scenario.js for types
-	pieces:[
-		{
-			position: {x:787,	y:219},	// position of image
-			asset:'res/character.png', // image to show
-			value:'1',	 // what is the result value for clicking this item
-			draggable:true // is the piece draggable
-		},
-		{
-			position: {x:400,	y:219},
-			asset:'res/character.png',
-			value:false,
-			draggable:true
-		},
-		{
-			position: {x:36,	y:219},
-			asset:'res/character.png',
-			value:false,
-			draggable:true
-		}
-	]
+var sc = {};
+
+sc.logo = {
+	type:'SplashScreen',
+	image:'res/liikenneturva.jpg',
+	duration:3000
 }
 
+sc.startScreen = {
+	type:'SplashScreen', // which kind of scene , check Scenario.js for types
+	image:'res/startscreen.png',
+}
 
-
-
-
-var option = {
+sc.option = {
 	type:'Option',
 	background:'res/street-1.jpg', // fullscreen background for scene
 	assets:[
@@ -51,7 +36,7 @@ var option = {
 	]
 }
 
-var ok = {
+sc.ok = {
 	type:'SplashScreen',
 	image:'res/happyface.png',
 	anchor:{x:0.5,y:0.5},
@@ -59,14 +44,14 @@ var ok = {
 	duration:2000
 }
 
-var touchGuide = {
+sc.touchGuide = {
 	type:'Guide',
 	image:'res/touch.png',
 	anchor:{x:0.5,y:0.5},
 	position:{x:512,y:384}
 }
 
-var housePuzzle = {
+sc.housePuzzle = {
 	type:'ImagePuzzle',
 	background:'res/house-background.jpg',
 	image:'res/house.jpg',
@@ -74,31 +59,48 @@ var housePuzzle = {
 	position:{x:0,y:0}
 }
 
-var trafficLightPuzzle = {
+sc.suojatiePuzzle = {
+	type:'ImagePuzzle',
+	background:'res/StreetWithSchool_suojatie.jpg',
+	image:'res/suojatie.png',
+	size:{x:2,y:2},
+	position:{x:233,y:592},
+	after:sc.ok,
+/*
+	assets:[{
+			position:{x:4,y:364},
+			asset:'res/character-2.png',
+			target:{x:900,y:364},
+		}]
+*/
+}
+
+
+sc.trafficLightPuzzle = {
 	type:'ImagePuzzle',
 	background:'res/street-blurred.jpg',
 	image:'res/trafficlight-puzzle.png',
 	position:{x:330,y:0},
-	size:{x:3,y:4},
-	after:ok,
+	size:{x:3,y:3},
+	after:sc.ok,
 }
 
-var characterPuzzle = {
+sc.characterPuzzle = {
 	type:'ImagePuzzle',
 	background:'res/street-2.jpg',
-	image:'res/character-2.png',
+	image:'res/character_cap.png',
 	position:{x:4,y:369},
 	size:{x:2,y:3},
-	after:ok,
+	after:sc.ok,
 }
 
-var streetCrossing = {
+sc.streetCrossing = {
 	type:'PiecePuzzle',
-	background:'res/streetWithSchool.jpg',
+	background:'res/StreetWithSchool.jpg',
 	pieces:[
 		{
 			position:{x:4,y:364},
-			asset:'res/character-2.png',
+			asset:'res/character_cap.png',
 			target:{x:900,y:364},
 			draggable:true			
 		}
@@ -113,10 +115,23 @@ var streetCrossing = {
 			asset:'res/traffic-light-green.png',
 		}
 	],
-	after:ok,	
+	after:sc.ok,	
 }
 
-var clothing = {
+sc.goOut = {
+	type:'PiecePuzzle',
+	background:'res/house_2.jpg',
+	pieces:[
+		{
+			position:{x:206,y:364},
+			target:{x:761,y:370},
+			asset:'res/character_cap.png',
+			draggable:true
+		},
+	],	
+}
+
+sc.clothing = {
 	type:'PiecePuzzle',
 	background:'res/house.jpg',
 	assets:[
@@ -124,13 +139,13 @@ var clothing = {
 			position:{x:682,y:364},
 			asset:'res/character.png'
 			
-		}
-	],
+		},
+	],	
 	pieces:[
 		{
 			position: {x:0,	y:334},
-			target:{x:724, y:365},
-			asset:'res/helmet.png',
+			target:{x:731, y:390},
+			asset:'res/cap.png',
 			draggable:true
 		},
 		{
@@ -146,5 +161,5 @@ var clothing = {
 			draggable:true
 		}
 	],
-	after:ok,
+	after:sc.ok,
 }

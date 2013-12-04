@@ -16,12 +16,11 @@ SplashScreen.prototype.init = function(config){
 
 	if (this._config.duration){
 		var me = this;
-		this._timer = setTimeout(function(){me.onComplete()},this._config.duration);
-		console.log('asdflkasdfjkalsdf')
+		this._timer = setTimeout(function(){me.onComplete(me._config)},this._config.duration);
 	}
 }
 
 SplashScreen.prototype.click = function(e){
 	if (this._timer) clearTimeout(this._timer);
-	this.onComplete();
+	this.onComplete(this._config);
 }

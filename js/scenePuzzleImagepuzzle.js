@@ -1,5 +1,4 @@
 function ImagePuzzle (config){
-	Puzzle.call(this);
 	this.init(config);
 }
 
@@ -40,7 +39,7 @@ ImagePuzzle.prototype.shuffle = function(){
 	this.each(function(piece){	
 		piece.animateTo(
 		 Math.floor( Math.random() * this._limiter.width - this._piecesize.x ) + this._limiter.x,
-			Math.floor( Math.random() * this._limiter.height - this._piecesize.y )+ this._limiter.y,500,500);
+			Math.floor( Math.random() * this._limiter.height - this._piecesize.y )+ this._limiter.y,500,1000);
 	});
 }
 

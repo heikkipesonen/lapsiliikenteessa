@@ -1,5 +1,4 @@
 function Puzzle(){
-	Scene.call(this);
 	
 }
 
@@ -14,6 +13,7 @@ Puzzle.prototype.onComplete = function(){
 Puzzle.prototype.checkComplete = function(){
 	var count = 0;
 	for (var i in this.pieces){
+
 		if (this.pieces[i].isInPosition() && this.pieces[i].moved){
 			count++;
 		}

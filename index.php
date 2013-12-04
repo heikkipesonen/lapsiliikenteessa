@@ -39,15 +39,6 @@
 		}
 	}
 
-
-	$js = scandir('css');
-	foreach ($js as $key => $value) {
-		if ($value != '.' && $value != '..' && !startsWith($value, '.')){
-			addCss('css/'.$value);
-		}
-	}
-
-
 	$temp_assets = scandir('res');
 	$assets = array();
 	foreach ($temp_assets as $key => $value) {
@@ -55,10 +46,41 @@
 			$assets[] = $value;
 		}
 	}
+/*
+	if (isset($_GET['palapeli'])){
+		$temp = scandir('palapelit');
+		$games = array();
+	
+		foreach ($temp as $key => $value) {
+			if ($value != '.' && $value != '..' && !startsWith($value, '.')){
+				$games[$value] = $value;
+			}
+		}
 
-	echo '<script type="text/javascript">';
-	echo 'var ASSETS=["'.implode($assets,'","').'"];';
-	echo '</script>';
+
+		if ($games[$_GET['palapeli']]){
+
+			$handle = fopen('palapelit/'.$games[$_GET['palapeli']], "r");
+			$conf = array();
+
+			if ($handle) {
+			    while (($line = fgets($handle)) !== false) {
+					$t = explode(':', $line);
+					if ($t[0] == 'paloja'){
+						$t[1] = explode('x', $t[1]);
+					}
+					$conf[$t[0]] = $t[1];
+			    }
+			} else {
+			    // error opening the file.
+			}
+		}
+	} else {
+		*/
+		echo '<script type="text/javascript">';
+		echo 'var ASSETS=["'.implode($assets,'","').'"];';
+		echo '</script>';
+	//}
 
 	foreach ($scripts as $script){
 		addScript($script);
@@ -69,9 +91,16 @@
 	</head>
 	<style type="text/css">
 		body{
+			position: absolute;
 			margin:0px;
 			padding:0px;
+			height: 100%;
+			width: 100%;
+			overflow: hidden;
+			background-color: #5cc35a;
 		}
+
+
 	</style>
 	<script type="text/javascript">
 

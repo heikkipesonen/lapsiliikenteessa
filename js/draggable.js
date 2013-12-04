@@ -89,7 +89,15 @@ Draggable.prototype = {
 			var dx = e.global.x - this.lastPosition.x,
 				dy = e.global.y - this.lastPosition.y;
 
-			this.move(dx,dy);
+
+			var scale = {x:1,y:1};
+			if (game){
+				if (game._scale){
+					scale = game._scale;
+				}
+			}
+
+			this.move(dx / scale.x,dy / scale.y);
 
 			this.velocity = {
 				x: dx / (e.originalEvent.timeStamp - this.lastPosition.timeStamp),
@@ -141,8 +149,9 @@ Draggable.prototype = {
 		
 		if (this.velocity.d){
 			var time = Math.max( this.velocity.d )* 10;
-			this.moved = true;
 		}	
+
+		this.moved = true;
 
 		var t = new TWEEN.Tween({scale:this.scale.x}).to({scale:this._scale.x},100).onUpdate(function(){
 			me.scale.x  = this.scale;

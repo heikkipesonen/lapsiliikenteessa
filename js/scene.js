@@ -116,7 +116,7 @@ Scene.prototype ={
 				var sprite = this.getSprite(asset.asset);
 				
 				if (asset.position){
-					sprite.position = asset.position;
+					sprite.position = {x:asset.position.x, y:asset.position.y};
 				}
 
 				if (asset.rotation){
@@ -176,7 +176,7 @@ Scene.prototype ={
 	init : function(){
 	},
 	setBackground: function(background){
-		this._background = new PIXI.Sprite( new PIXI.Texture.fromImage( background) );		
+		this._background = new PIXI.Sprite( new PIXI.Texture.fromImage( background) );	
 	},
 	getBounds:function(){
 		return {x:this._background.position.x, y:this._background.position.y, width:this._background.width, height: this._background.height};

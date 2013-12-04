@@ -1,5 +1,4 @@
-function PiecePuzzle(config){
-	Puzzle.call(this);
+function PiecePuzzle(config){	
 	this.init(config);
 }
 
@@ -24,12 +23,10 @@ PiecePuzzle.prototype.init = function(config){
 	}
 
 	this._limiter = this.getBounds();
-	console.log(this._limiter)
 
 	for (var i in this.pieces){
 		this.pieces[i].setLimiter(this._limiter);
 	}
-	//this.showGuide(touchGuide);
 }
 
 PiecePuzzle.prototype.addTo = function(stage){

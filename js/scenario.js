@@ -35,19 +35,18 @@ Scenario.prototype = {
 			this._currentScene = scene;
 			this.scene = this.scenes[scene.type](scene);
 			this.scene.onComplete = function(scene){
-				
-				if (scene._config){				
-					if (scene._config.after){
-						// mainly used for happy-face screen, not recursive because of things and stuff
-						var _scene = me.scenes[scene._config.after.type](scene._config.after);
-						_scene.show(me._stage);
-						_scene.onComplete = function(){
-							_scene.hide();
-							me.onSceneComplete(scene);
+					if (scene._config){				
+						if (scene._config.after){
+							// mainly used for happy-face screen, not recursive because of things and stuff
+							var _scene = me.scenes[scene._config.after.type](scene._config.after);
+							_scene.show(me._stage);
+							_scene.onComplete = function(){
+								_scene.hide();
+								me.onSceneComplete(scene);
+							}
+							return;
 						}
-						return;
 					}
-				}
 				me.onSceneComplete(scene);
 			};
 		}
